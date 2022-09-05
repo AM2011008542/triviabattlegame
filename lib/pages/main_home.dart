@@ -1,7 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:triviabattlegame/pages/home.dart';
+//import 'package:triviabattlegame/pages/home.dart';
+import 'package:triviabattlegame/trivia/ui/pages/home.dart';
 import 'package:triviabattlegame/pages/leaderboard.dart';
 import 'package:triviabattlegame/pages/profile.dart';
 import 'package:triviabattlegame/pages/search.dart';
@@ -22,7 +23,7 @@ class _MainHome extends State<MainHome> {
   int _currentIndex = 0;
 
   final pages = [
-    const HomePage(),
+    HomePage(), //const
     const SearchPage(),
     const LeaderboardPage(),
     const ProfilePage(),

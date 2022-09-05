@@ -57,6 +57,13 @@ dependencies:
   connectivity_plus: ^2.3.6+1
   # overlay_support: ^2.0.1
   top_snackbar_flutter: ^2.1.1
+  awesome_dialog: ^2.2.1
+
+  font_awesome_flutter: ^10.1.0
+  http: ^0.13.0
+  flutter_custom_clippers: ^0.1.6
+  html_unescape: ^1.0.1+2
+  auto_size_text: ^2.0.0+2
 
 dev_dependencies:
   flutter_test:
