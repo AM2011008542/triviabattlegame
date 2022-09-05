@@ -99,7 +99,7 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
                     label: const Text("Any"),
                     labelStyle: const TextStyle(color: Colors.white),
                     backgroundColor: _difficulty == null ? Colors.indigo : Colors.grey.shade600,
-                    onPressed: () => _selectDifficulty(""),
+                    onPressed: () => _selectDifficulty("any"), //supposed to be null
                   ),
                   ActionChip(
                     label: const Text("Easy"),
@@ -155,7 +155,7 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
       Navigator.pop(context);
       if(questions.length < 1) {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => ErrorPage(message: "There are not enough questions in the category, with the options you selected.",)
+          builder: (_) => const ErrorPage(message: "There are not enough questions in the category, with the options you selected.",)
         ));
         return;
       }
@@ -164,11 +164,11 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
       ));
     }on SocketException catch (_) {
       Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (_) => ErrorPage(message: "Can't reach the servers, \n Please check your internet connection.",)
+        builder: (_) => const ErrorPage(message: "Can't reach the servers, \n Please check your internet connection.",)
       ));
     } catch(e){
       Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (_) => ErrorPage(message: "Unexpected error trying to connect to the API",)
+        builder: (_) => const ErrorPage(message: "Unexpected error trying to connect to the API",)
       ));
     }
     setState(() {
