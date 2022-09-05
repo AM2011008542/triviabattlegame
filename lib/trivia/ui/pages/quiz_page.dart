@@ -18,7 +18,7 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  final TextStyle _questionStyle = TextStyle(
+  final TextStyle _questionStyle = const TextStyle(
       fontSize: 18.0, fontWeight: FontWeight.w500, color: Colors.white);
 
   int _currentIndex = 0;
@@ -62,7 +62,7 @@ class _QuizPageState extends State<QuizPage> {
                         backgroundColor: Colors.white70,
                         child: Text("${_currentIndex + 1}"),
                       ),
-                      SizedBox(width: 16.0),
+                      const SizedBox(width: 16.0),
                       Expanded(
                         child: Text(
                           HtmlUnescape().convert(
@@ -75,14 +75,14 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   Card(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         ...options.map((option) => RadioListTile<String>( //<string>
                               title: Text(HtmlUnescape().convert("$option"),style: MediaQuery.of(context).size.width > 800
-                              ? TextStyle(
+                              ? const TextStyle(
                                 fontSize: 30.0
                               ) : null,),
                               groupValue: _answers[_currentIndex],
@@ -102,12 +102,12 @@ class _QuizPageState extends State<QuizPage> {
                       child: RaisedButton(
                         padding: MediaQuery.of(context).size.width > 800
                               ? const EdgeInsets.symmetric(vertical: 20.0,horizontal: 64.0) : null,
+                        onPressed: _nextSubmit,
                         child: Text(
                             _currentIndex == (widget.questions.length - 1)
                                 ? "Submit"
                                 : "Next", style: MediaQuery.of(context).size.width > 800
-                              ? TextStyle(fontSize: 30.0) : null,),
-                        onPressed: _nextSubmit,
+                              ? const TextStyle(fontSize: 30.0) : null,),
                       ),
                     ),
                   )

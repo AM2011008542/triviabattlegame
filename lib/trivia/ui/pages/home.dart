@@ -21,10 +21,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('OpenTrivia'),
-          elevation: 0,
-        ),
         body: Stack(
           children: <Widget>[
             ClipPath(
@@ -36,11 +32,11 @@ class HomePage extends StatelessWidget {
               ),
             ),
             CustomScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               slivers: <Widget>[
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8.0),
                     child: Text(
                       "Select a category to start the quiz",
@@ -88,7 +84,7 @@ class HomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           if (category.icon != null) Icon(category.icon),
-          if (category.icon != null) SizedBox(height: 5.0),
+          if (category.icon != null) const SizedBox(height: 5.0),
           AutoSizeText(
             category.name,
             minFontSize: 10.0,

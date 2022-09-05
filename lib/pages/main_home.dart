@@ -18,7 +18,7 @@ class _MainHome extends State<MainHome> {
   final navigationKey = GlobalKey<CurvedNavigationBarState>();
 
   String appbarTitleString = "Home";
-  var appBarTitleText = const Text("Main");
+  var appBarTitleText = const Text("Home");
 
   int _currentIndex = 0;
 
