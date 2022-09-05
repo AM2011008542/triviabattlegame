@@ -45,7 +45,7 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return OverlaySupport(
+    return OverlaySupport.local(
         child: MaterialApp(
           title: 'Sign Up',
           home: SafeArea(
