@@ -6,7 +6,8 @@ import 'package:triviabattlegame/trivia//models/question.dart';
 const String baseUrl = "https://opentdb.com/api.php";
 
 Future<List<Question>> getQuestions(Category category, int total, String difficulty) async {
-  http.Response res = await http.get(Uri.parse("$baseUrl?amount=$total&category=${category.id}&difficulty=$difficulty"));
+  http.Response res = await http.get(Uri.parse(
+      "$baseUrl?amount=$total&category=${category.id}&difficulty=$difficulty"));
 
   /*var url = Uri.parse("$baseUrl?amount=$total&category=${category.id}");
   if(difficulty != null) {
