@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -151,7 +152,6 @@ class _LoginPageState extends State<LoginPage> {
       // show current text form field output
       print(emailController.text.trim());
       print(passwordController.text.trim());
-
       // sign in handling error method
       try {
         // sign in method
@@ -160,6 +160,10 @@ class _LoginPageState extends State<LoginPage> {
             password: passwordController.text.trim()
         );
         choiceAction();
+        // hide system overlay
+        SystemChrome.setEnabledSystemUIMode(
+            SystemUiMode.leanBack
+        );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           showTopSnackBar(

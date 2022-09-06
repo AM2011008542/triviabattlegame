@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:triviabattlegame/auth_service.dart';
 import 'package:triviabattlegame/pages/login.dart';
@@ -8,12 +9,17 @@ import 'package:triviabattlegame/pages/main_home.dart';
 
 Future<void> main()  async {
  WidgetsFlutterBinding.ensureInitialized();
+
+ // hide system overlay
+ SystemChrome.setEnabledSystemUIMode(
+     SystemUiMode.leanBack
+ );
+
  await Firebase.initializeApp();
  runApp(myApp());
 }
 
 class myApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

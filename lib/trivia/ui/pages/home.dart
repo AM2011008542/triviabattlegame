@@ -66,7 +66,8 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ],
-        ));
+        ),
+    );
   }
 
   Widget _buildCategoryItem(BuildContext context, int index) {
