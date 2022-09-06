@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -11,12 +12,29 @@ class _SearchPage extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xffEEF1F3),
-      body: Center(
-          child: Text('Search',
-            style: TextStyle(fontSize: 60, color: Colors.blue),
-          )
+    return MaterialApp(
+      title: "Search interface",
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: const Text("Search"),
+          centerTitle: true,
+        ),
+        body: Stack(
+          children: <Widget>[
+            ClipPath(
+              clipper: WaveClipperTwo(),
+              child: Container(
+                decoration:
+                const BoxDecoration(color: Colors.purple),
+                height: 200,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

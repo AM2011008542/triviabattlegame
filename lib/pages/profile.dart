@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -18,40 +19,62 @@ class _ProfilePage extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffF6DEC8),
-      body: SizedBox(
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const SizedBox(height: 50,),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MaterialButton(
-                        onPressed: () {
-                          choiceAction();
-                        },
-                        color: Colors.black,
-                        height: 45,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)
-                        ),
-                        padding: const EdgeInsets.only(left: 25, right: 25, bottom: 4),
-                        child: Center(
-                          child: Text("LOG OUT", style: GoogleFonts.robotoSlab(
-                              fontSize: 16,
-                              color: Colors.white
-                          ),),)
+    return MaterialApp(
+      title: "Profile interface",
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: const Text("Profile"),
+          centerTitle: true,
+        ),
+        body: Stack(
+          children: <Widget>[
+            ClipPath(
+              clipper: WaveClipperTwo(),
+              child: Container(
+                decoration:
+                const BoxDecoration(color: Colors.green),
+                height: 200,
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const SizedBox(height: 50,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          MaterialButton(
+                              onPressed: () {
+                                choiceAction();
+                              },
+                              color: Colors.black,
+                              height: 45,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)
+                              ),
+                              padding: const EdgeInsets.only(left: 25, right: 25, bottom: 4),
+                              child: Center(
+                                child: Text("LOG OUT", style: GoogleFonts.robotoSlab(
+                                    fontSize: 16,
+                                    color: Colors.white
+                                ),),)
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],

@@ -22,52 +22,57 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-          children: <Widget>[
-            ClipPath(
-              clipper: WaveClipperTwo(),
-              child: Container(
-                decoration:
-                    BoxDecoration(color: Theme.of(context).primaryColor),
-                height: 200,
-              ),
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text("Home"),
+        centerTitle: true,
+      ),
+      body: Stack(
+        children: <Widget>[
+          ClipPath(
+            clipper: WaveClipperTwo(),
+            child: Container(
+              decoration:
+              BoxDecoration(color: Theme.of(context).primaryColor),
+              height: 200,
             ),
-            CustomScrollView(
-              physics: const BouncingScrollPhysics(),
-              slivers: <Widget>[
-                const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8.0),
-                    child: Text(
-                      "Select a category to start the quiz",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0),
-                    ),
+          ),
+          CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: <Widget>[
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  child: Text(
+                    "Select a category to start the trivia",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.0),
                   ),
                 ),
-                SliverPadding(
-                  padding: const EdgeInsets.all(16.0),
-                  sliver: SliverGrid(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: MediaQuery.of(context).size.width >
-                                  1000
-                              ? 7
-                              : MediaQuery.of(context).size.width > 600 ? 5 : 3,
-                          childAspectRatio: 1.2,
-                          crossAxisSpacing: 10.0,
-                          mainAxisSpacing: 10.0),
-                      delegate: SliverChildBuilderDelegate(
-                        _buildCategoryItem,
-                        childCount: categories.length,
-                      )),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.all(16.0),
+                sliver: SliverGrid(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: MediaQuery.of(context).size.width >
+                            1000
+                            ? 7
+                            : MediaQuery.of(context).size.width > 600 ? 5 : 3,
+                        childAspectRatio: 1.2,
+                        crossAxisSpacing: 10.0,
+                        mainAxisSpacing: 10.0),
+                    delegate: SliverChildBuilderDelegate(
+                      _buildCategoryItem,
+                      childCount: categories.length,
+                    )),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

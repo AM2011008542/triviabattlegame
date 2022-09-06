@@ -19,9 +19,6 @@ class MainHome extends StatefulWidget {
 class _MainHome extends State<MainHome> {
   final navigationKey = GlobalKey<CurvedNavigationBarState>();
 
-  String appbarTitleString = "Home";
-  var appBarTitleText = const Text("Home");
-
   int _currentIndex = 0;
 
   final pages = [
@@ -80,11 +77,6 @@ class _MainHome extends State<MainHome> {
     return Scaffold(
       extendBody: true,
       backgroundColor: Colors.redAccent,
-      appBar: AppBar(
-        elevation: 0,
-        title: appBarTitleText,
-        centerTitle: true,
-      ),
       body: pages[_currentIndex],
         bottomNavigationBar: SalomonBottomBar(
           currentIndex: _currentIndex,
@@ -92,29 +84,21 @@ class _MainHome extends State<MainHome> {
             onTap: (index) => setState(() {
               _currentIndex = index;
               if (index == 0) {
-                appbarTitleString = "Home" ;
-                appBarTitleText = Text(appbarTitleString);
                 SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
                   statusBarColor: Colors.red,
                 ));
                 print("Home interface");
               } else if (index == 1) {
-                appbarTitleString = "Search" ;
-                appBarTitleText = Text(appbarTitleString);
                 SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
                   statusBarColor: Colors.purple,
                 ));
                 print("Search interface");
               } else if(index == 2) {
-                appbarTitleString = "Leaderboard" ;
-                appBarTitleText = Text(appbarTitleString);
                 SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
                   statusBarColor: Colors.blue,
                 ));
                 print("Leaderboard interface");
               } else if(index == 3) {
-                appbarTitleString = "Profile" ;
-                appBarTitleText = Text(appbarTitleString);
                 SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
                   statusBarColor: Colors.green,
                 ));

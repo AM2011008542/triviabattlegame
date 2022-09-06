@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 class LeaderboardPage extends StatefulWidget {
   const LeaderboardPage({Key? key}) : super(key: key);
@@ -11,12 +12,29 @@ class _LeaderboardPage extends State<LeaderboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xffEEF1F3),
-      body: Center(
-          child: Text('Leaderboard',
-            style: TextStyle(fontSize: 60, color: Colors.blue),
-          )
+    return MaterialApp(
+      title: "Leaderboard interface",
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: const Text("Leaderboard"),
+          centerTitle: true,
+        ),
+        body: Stack(
+          children: <Widget>[
+            ClipPath(
+              clipper: WaveClipperTwo(),
+              child: Container(
+                decoration:
+                const BoxDecoration(color: Colors.blue),
+                height: 200,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
