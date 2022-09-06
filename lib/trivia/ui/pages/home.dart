@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:triviabattlegame/trivia//models/category.dart';
 import 'package:triviabattlegame/trivia//ui/widgets/quiz_options.dart';
@@ -99,6 +100,10 @@ class HomePage extends StatelessWidget {
   }
 
   _categoryPressed(BuildContext context, Category category) {
+    // hide system overlay
+    SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.leanBack
+    );
     showModalBottomSheet(
       context: context,
       builder: (sheetContext) => BottomSheet(

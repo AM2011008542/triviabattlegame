@@ -58,22 +58,22 @@ class _MainHome extends State<MainHome> {
       SalomonBottomBarItem(
         icon: const Icon(Icons.home),
         title: const Text("Home"),
-        selectedColor: Colors.purple,
+        selectedColor: Colors.red,
       ),
       SalomonBottomBarItem(
         icon: const Icon(Icons.search),
         title: const Text("Search"),
-        selectedColor: Colors.pink,
+        selectedColor: Colors.purple,
       ),
       SalomonBottomBarItem(
         icon: const Icon(Icons.leaderboard),
         title: const Text("Leaderboard"),
-        selectedColor: Colors.orange,
+        selectedColor: Colors.blue,
       ),
       SalomonBottomBarItem(
         icon: const Icon(Icons.person),
         title: const Text("Profile"),
-        selectedColor: Colors.teal,
+        selectedColor: Colors.green,
       ),
     ];
 
@@ -94,22 +94,36 @@ class _MainHome extends State<MainHome> {
               if (index == 0) {
                 appbarTitleString = "Home" ;
                 appBarTitleText = Text(appbarTitleString);
+                SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+                  statusBarColor: Colors.red,
+                ));
                 print("Home interface");
               } else if (index == 1) {
                 appbarTitleString = "Search" ;
                 appBarTitleText = Text(appbarTitleString);
+                SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+                  statusBarColor: Colors.purple,
+                ));
                 print("Search interface");
               } else if(index == 2) {
                 appbarTitleString = "Leaderboard" ;
                 appBarTitleText = Text(appbarTitleString);
+                SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+                  statusBarColor: Colors.blue,
+                ));
                 print("Leaderboard interface");
               } else if(index == 3) {
                 appbarTitleString = "Profile" ;
                 appBarTitleText = Text(appbarTitleString);
+                SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+                  statusBarColor: Colors.green,
+                ));
                 print("Profile interface");
               }
             })
+
         )
+
       /*Theme(
             data: Theme.of(context).copyWith(
               iconTheme: const IconThemeData(color: Colors.black),
