@@ -80,7 +80,6 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
                     backgroundColor: _noOfQuestions == 50 ? Colors.indigo : Colors.grey.shade600,
                     onPressed: () => _selectNumberOfQuestions(50),
                   ),
-                  
                 ],
               ),
             ),
@@ -119,12 +118,11 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
                     backgroundColor: _difficulty == "hard" ? Colors.indigo : Colors.grey.shade600,
                     onPressed: () => _selectDifficulty("hard"),
                   ),
-                  
                 ],
               ),
             ),
             const SizedBox(height: 20.0),
-            processing ? const CircularProgressIndicator() : RaisedButton(
+            processing ? const CircularProgressIndicator() : ElevatedButton(
               onPressed: _startQuiz,
               child: const Text("Start Quiz"),
             ),

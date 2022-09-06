@@ -7,9 +7,7 @@ class QuizFinishedPage extends StatelessWidget {
   final Map<int, dynamic> answers;
   
   int correctAnswers = 0;
-  QuizFinishedPage({Key? key, required this.questions, required this.answers}): super(key: key) {
-
-  }
+  QuizFinishedPage({Key? key, required this.questions, required this.answers}): super(key: key);
 
   @override
   Widget build(BuildContext context){
@@ -42,7 +40,7 @@ class QuizFinishedPage extends StatelessWidget {
           gradient: LinearGradient(
             colors: [
               Theme.of(context).primaryColor,
-              Theme.of(context).accentColor
+              Theme.of(context).colorScheme.secondary
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter
@@ -99,21 +97,21 @@ class QuizFinishedPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  RaisedButton(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                  ElevatedButton( // RaisedButton
+                    /*padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    color: Theme.of(context).accentColor.withOpacity(0.8),
-                    child: const Text("Goto Home"),
+                    color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),*/
+                    child: const Text("Go to Home"),
                     onPressed: () => Navigator.pop(context),
                   ),
-                  RaisedButton(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                  ElevatedButton( // RaisedButton
+                    /*padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).primaryColor,*/
                     child: const Text("Check Answers"),
                     onPressed: (){
                       Navigator.of(context).push(MaterialPageRoute(

@@ -30,5 +30,4 @@ class Question {
   static List<Question> fromData(List<Map<String,dynamic>> data){
     return data.map((question) => Question.fromMap(question)).toList();
   }
-
 }

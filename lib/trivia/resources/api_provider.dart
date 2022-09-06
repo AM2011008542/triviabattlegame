@@ -9,9 +9,9 @@ Future<List<Question>> getQuestions(Category category, int total, String difficu
   http.Response res = await http.get(Uri.parse(
       "$baseUrl?amount=$total&category=${category.id}&difficulty=$difficulty"));
 
-  /*var url = Uri.parse("$baseUrl?amount=$total&category=${category.id}");
+  /*String url = "$baseUrl?amount=$total&category=${category.id}";
   if(difficulty != null) {
-    url = "$url&difficulty=$difficulty" as Uri;
+    url = "$url&difficulty=$difficulty";
   }
   http.Response res = await http.get(url);*/
 

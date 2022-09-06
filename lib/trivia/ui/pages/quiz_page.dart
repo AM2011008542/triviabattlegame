@@ -35,7 +35,13 @@ class _QuizPageState extends State<QuizPage> {
     }
 
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: () async {
+        print("Back Button Pressed");
+
+        final shouldPop = await showWarning(context);
+
+        return shouldPop ?? false;
+      },
       child: Scaffold(
         key: _key,
         appBar: AppBar(
@@ -99,9 +105,9 @@ class _QuizPageState extends State<QuizPage> {
                   Expanded(
                     child: Container(
                       alignment: Alignment.bottomCenter,
-                      child: RaisedButton(
-                        padding: MediaQuery.of(context).size.width > 800
-                              ? const EdgeInsets.symmetric(vertical: 20.0,horizontal: 64.0) : null,
+                      child: ElevatedButton( // RaisedButton
+                        /*padding: MediaQuery.of(context).size.width > 800
+                              ? const EdgeInsets.symmetric(vertical: 20.0,horizontal: 64.0) : null,*/
                         onPressed: _nextSubmit,
                         child: Text(
                             _currentIndex == (widget.questions.length - 1)
@@ -138,20 +144,21 @@ class _QuizPageState extends State<QuizPage> {
     }
   }
 
-  Future<bool> _onWillPop() async {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) {
-      return CupertinoAlertDialog(
-        title: const Text('Welcome Back!'),
-        content: const Text('We\'re happy that you\'re back! Hope you can beat other players!'),
-        actions: <Widget>[
-          CupertinoDialogAction(
-            child: const Text("Okay"),
-            onPressed: () => Navigator.of(context).pop(false),
-          ),
-        ],
-      );
-    }));
-    return true;
-  }
+  Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text("Warning!"),
+      content: const Text("Are you sure you want to quit the quiz? All your progress will be lost."),
+      actions: [
+        ElevatedButton(
+          onPressed: () => Navigator.pop(context, true),
+          child: const Text("Okay"),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: const Text("Cancel"),
+        ),
+      ],
+    ),
+  );
 }

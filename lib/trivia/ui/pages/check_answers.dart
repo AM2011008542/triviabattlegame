@@ -31,7 +31,6 @@ class CheckAnswersPage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             itemCount: questions.length+1,
             itemBuilder: _buildItem,
-
           )
         ],
       ),
@@ -39,7 +38,7 @@ class CheckAnswersPage extends StatelessWidget {
   }
   Widget _buildItem(BuildContext context, int index) {
     if(index == questions.length) {
-      return RaisedButton(
+      return ElevatedButton(
         child: const Text("Done"),
         onPressed: (){
           Navigator.of(context).popUntil(ModalRoute.withName(Navigator.defaultRouteName));
