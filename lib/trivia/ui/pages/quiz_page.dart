@@ -36,10 +36,8 @@ class _QuizPageState extends State<QuizPage> {
 
     return WillPopScope(
       onWillPop: () async {
-        print("Back Button Pressed");
-
+        print("Back button pressed");
         final shouldPop = await showWarning(context);
-
         return shouldPop ?? false;
       },
       child: Scaffold(
@@ -128,7 +126,7 @@ class _QuizPageState extends State<QuizPage> {
 
   void _nextSubmit() {
     if (_answers[_currentIndex] == null) {
-      _key.currentState?.showSnackBar(const SnackBar( //snackbar fix
+      _key.currentState?.showSnackBar(const SnackBar( //SnackBar fix
         content: Text("You must select an answer to continue."),
       ));
       return;
