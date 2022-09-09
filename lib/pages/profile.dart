@@ -101,10 +101,6 @@ class _ProfilePage extends State<ProfilePage> {
                 print("User Log Out");
                 Navigator.of(context).pop(true);
                 context.read<AuthenticationService>().signOut();
-                // exit system overlay
-                SystemChrome.setEnabledSystemUIMode(
-                    SystemUiMode.edgeToEdge
-                );
               }),
         ],
       ),
