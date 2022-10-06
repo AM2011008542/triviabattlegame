@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-//import 'package:triviabattlegame/pages/home.dart';
 import 'package:triviabattlegame/trivia/ui/pages/home.dart';
 import 'package:triviabattlegame/pages/leaderboard.dart';
 import 'package:triviabattlegame/pages/profile.dart';
@@ -87,21 +86,37 @@ class _MainHome extends State<MainHome> {
                 SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
                   statusBarColor: Colors.red,
                 ));
+                // hide system overlay
+                SystemChrome.setEnabledSystemUIMode(
+                    SystemUiMode.leanBack
+                );
                 print("Home interface");
               } else if (index == 1) {
                 SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
                   statusBarColor: Colors.purple,
                 ));
+                // hide system overlay
+                SystemChrome.setEnabledSystemUIMode(
+                    SystemUiMode.leanBack
+                );
                 print("Search interface");
               } else if(index == 2) {
                 SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
                   statusBarColor: Colors.blue,
                 ));
+                // hide system overlay
+                SystemChrome.setEnabledSystemUIMode(
+                    SystemUiMode.leanBack
+                );
                 print("Leaderboard interface");
               } else if(index == 3) {
                 SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
                   statusBarColor: Colors.green,
                 ));
+                // hide system overlay
+                SystemChrome.setEnabledSystemUIMode(
+                    SystemUiMode.leanBack
+                );
                 print("Profile interface");
               }
             })

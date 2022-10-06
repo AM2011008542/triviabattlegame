@@ -173,10 +173,6 @@ class _LoginPageState extends State<LoginPage> {
               "No user found for that email.",
             ),
           );
-          const SnackBar(
-              content: Text('Hello, world!'),
-
-          );
           print('No user found for that email.');
         } else if (e.code == 'wrong-password') {
           showTopSnackBar(

@@ -67,7 +67,8 @@ class HomePage extends StatelessWidget {
                     delegate: SliverChildBuilderDelegate(
                       _buildCategoryItem,
                       childCount: categories.length,
-                    )),
+                    ),
+                ),
               ),
             ],
           ),
