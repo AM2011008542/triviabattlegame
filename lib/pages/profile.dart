@@ -38,10 +38,9 @@ class _ProfilePage extends State<ProfilePage> {
                     return PopupMenuItem<String>(
                       value: choice,
                       child: Text(choice),);
-                  })
-                      .toList();
-                }
-                ,)
+                  }).toList();
+                  },
+              )
             ]
         ),
         body: Stack(
