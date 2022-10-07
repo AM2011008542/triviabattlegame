@@ -74,7 +74,7 @@ class _SignupPageState extends State<SignupPage> {
                                 bottom: 5,
                                 right: 5,
                                 child: GestureDetector(
-                                  onTap: _pickProfileImage,
+                                  onTap: pickProfileImage,
                                   child: Container(
                                     height: 50,
                                     width: 50,
@@ -143,8 +143,8 @@ class _SignupPageState extends State<SignupPage> {
                       CustomFormButton(innerText: 'Signup',
                           onPressed: () async {
                             hasInternet = await InternetConnectionChecker().hasConnection;
-                            if(hasInternet == true){
-                              _handleSignUpUser();
+                            if(hasInternet == true) {
+                              checkProfilePic();
                             } else {
                               showTopSnackBar(
                                 context,
@@ -211,8 +211,8 @@ class _SignupPageState extends State<SignupPage> {
 
         // create database
         createDB(username: nameController.text, userEmail: emailController.text, userPassword: passwordController.text,
-          userPhone: phoneController.text, userCourse: courseController.text, userBio: bioController.text,
-          userLocation: locationController.text, userPoint: 1000, userToQ: 0);
+            userPhone: phoneController.text, userCourse: courseController.text, userBio: bioController.text,
+            userLocation: locationController.text, userPoint: 1000, userToQ: 0);
 
         // go to home interface
         Navigator.pop(context, MaterialPageRoute(builder: (context) => const MainHome()));
@@ -243,7 +243,7 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
-  void _pickProfileImage() async {
+  void pickProfileImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if(image == null) return;
@@ -257,6 +257,20 @@ class _SignupPageState extends State<SignupPage> {
         "Failed to pick image error.",
       );
       debugPrint('Failed to pick image error: $e');
+    }
+  }
+
+  void checkProfilePic() async {
+    if(_profileImage == null) {
+      showTopSnackBar(
+        context,
+        const CustomSnackBar.error(
+          message:
+          "Profile picture is empty!",
+        ),
+      );
+    } else if(_profileImage != null) {
+      _handleSignUpUser();
     }
   }
 
