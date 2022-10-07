@@ -196,6 +196,19 @@ class _SignupPageState extends State<SignupPage> {
             password: passwordController.text.trim()
         );
 
+        // get current user id
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        final User user = auth.currentUser!;
+        final uid = user.uid;
+
+        // upload profile pic to database
+        final file = File(_profileImage!.path);
+
+        final ref = FirebaseStorage.instance.ref().child("users").child(uid);
+        ref.putFile(file);
+
+        print("Profile pic successfully uploaded!");
+
         // create database
         createDB(username: nameController.text, userEmail: emailController.text, userPassword: passwordController.text,
           userPhone: phoneController.text, userCourse: courseController.text, userBio: bioController.text,
