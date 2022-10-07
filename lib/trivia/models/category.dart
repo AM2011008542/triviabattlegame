@@ -9,7 +9,7 @@ class Category{
 }
 
 final List<Category> categories = [
-  const Category(9,"General Knowledge", icon: FontAwesomeIcons.earthAsia),
+  const Category(9,"Random Knowledge", icon: FontAwesomeIcons.earthAsia),
   const Category(10,"Books", icon: FontAwesomeIcons.bookOpen),
   const Category(11,"Film", icon: FontAwesomeIcons.video),
   const Category(12,"Music", icon: FontAwesomeIcons.music),

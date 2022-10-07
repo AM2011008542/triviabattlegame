@@ -5,7 +5,7 @@ import 'package:triviabattlegame/trivia//ui/pages/check_answers.dart';
 class QuizFinishedPage extends StatelessWidget {
   final List<Question> questions;
   final Map<int, dynamic> answers;
-  
+
   int correctAnswers = 0;
   QuizFinishedPage({Key? key, required this.questions, required this.answers}): super(key: key);
 
@@ -27,7 +27,7 @@ class QuizFinishedPage extends StatelessWidget {
       fontSize: 20.0,
       fontWeight: FontWeight.bold
     );
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Result'),

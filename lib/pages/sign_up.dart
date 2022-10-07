@@ -281,7 +281,7 @@ class _SignupPageState extends State<SignupPage> {
     try {
       showTopSnackBar(
         context,
-        const CustomSnackBar.info(
+        const CustomSnackBar.success(
           message:
           "Congratulations, you've received 1000 points!",
         ),
