@@ -95,12 +95,6 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
                 children: <Widget>[
                   const SizedBox(width: 0.0),
                   ActionChip(
-                    label: const Text("Any"),
-                    labelStyle: const TextStyle(color: Colors.white),
-                    backgroundColor: _difficulty == null ? Colors.indigo : Colors.grey.shade600,
-                    onPressed: () => _selectDifficulty("any"), //supposed to be null
-                  ),
-                  ActionChip(
                     label: const Text("Easy"),
                     labelStyle: const TextStyle(color: Colors.white),
                     backgroundColor: _difficulty == "easy" ? Colors.indigo : Colors.grey.shade600,

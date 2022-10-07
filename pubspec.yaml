@@ -70,6 +70,8 @@ dependencies:
   flutter_speed_dial: ^6.1.0+1
   matrix4_transform: ^2.0.1
 
+  confetti: ^0.7.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
