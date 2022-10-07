@@ -272,8 +272,14 @@ class _SignupPageState extends State<SignupPage> {
           "Congratulations, you've received 1000 points!",
         ),
       );
+
+      final FirebaseAuth auth = FirebaseAuth.instance;
+
+      final User user = auth.currentUser!;
+      final uid = user.uid;
+
       // reference to document
-      final userDoc = FirebaseFirestore.instance.collection('users').doc();
+      final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
 
       final users = Users(
         userID: userDoc.id,
