@@ -8,7 +8,7 @@ class Users {
   final String userBio;
   final String userLocation;
   final int userPoint;
-  final String userToQ;
+  final int userToQ;
 
   Users({
     this.userID = '',

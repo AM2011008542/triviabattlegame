@@ -139,19 +139,6 @@ class _SignupPageState extends State<SignupPage> {
                         },
                         suffixIcon: true,
                       ),
-                      const SizedBox(height: 16,),
-                      CustomInputField(
-                          labelText: 'Contact no.',
-                          hintText: 'Your contact number',
-                          isDense: true,
-                          validator: (phone) {
-                            if(phone == null || phone.isEmpty) {
-                              return 'Contact number is required!';
-                            }
-                            phoneController.text = phone;
-                            return null;
-                          }
-                      ),
                       const SizedBox(height: 22,),
                       CustomFormButton(innerText: 'Signup',
                           onPressed: () async {
@@ -212,7 +199,7 @@ class _SignupPageState extends State<SignupPage> {
         // create database
         createDB(username: nameController.text, userEmail: emailController.text, userPassword: passwordController.text,
           userPhone: phoneController.text, userCourse: courseController.text, userBio: bioController.text,
-          userLocation: locationController.text, userPoint: 1000, userToQ: ToQController.text,);
+          userLocation: locationController.text, userPoint: 1000, userToQ: 0);
 
         // go to home interface
         Navigator.pop(context, MaterialPageRoute(builder: (context) => const MainHome()));
@@ -262,7 +249,7 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<void> createDB({required String username, required String userEmail, required String userPassword,
     required String userPhone, required String userCourse, required String userBio,
-    required String userLocation, required int userPoint, required String userToQ, }) async {
+    required String userLocation, required int userPoint, required int userToQ, }) async {
 
     try {
       showTopSnackBar(
@@ -292,7 +279,7 @@ class _SignupPageState extends State<SignupPage> {
         userBio: bioController.text,
         userLocation: locationController.text,
         userPoint: 1000,
-        userToQ: ToQController.text,
+        userToQ: 0,
       );
       final json = users.toJson();
       await userDoc.set(json);
