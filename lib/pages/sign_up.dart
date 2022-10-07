@@ -1,12 +1,15 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:triviabattlegame/pages/users.dart';
 import '../animated/custom_form_button.dart';
 import '../animated/custom_input_field.dart';
 import '../animated/page_header.dart';
@@ -28,19 +31,15 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController courseController = TextEditingController();
+  final TextEditingController bioController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+  final TextEditingController pointController = TextEditingController();
+  final TextEditingController ToQController = TextEditingController();
+
   final _signupFormKey = GlobalKey<FormState>();
-
-  Future _pickProfileImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if(image == null) return;
-
-      final imageTemporary = File(image.path);
-      setState(() => _profileImage = imageTemporary);
-    } on PlatformException catch (e) {
-      debugPrint('Failed to pick image error: $e');
-    }
-  }
 
   bool hasInternet = false;
 
@@ -105,6 +104,7 @@ class _SignupPageState extends State<SignupPage> {
                             if(name == null || name.isEmpty) {
                               return 'Name field is required!';
                             }
+                            nameController.text = name;
                             return null;
                           }
                       ),
@@ -126,18 +126,6 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       const SizedBox(height: 16,),
                       CustomInputField(
-                          labelText: 'Contact no.',
-                          hintText: 'Your contact number',
-                          isDense: true,
-                          validator: (phone) {
-                            if(phone == null || phone.isEmpty) {
-                              return 'Contact number is required!';
-                            }
-                            return null;
-                          }
-                      ),
-                      const SizedBox(height: 16,),
-                      CustomInputField(
                         labelText: 'Password',
                         hintText: 'Your password',
                         isDense: true,
@@ -150,6 +138,19 @@ class _SignupPageState extends State<SignupPage> {
                           return null;
                         },
                         suffixIcon: true,
+                      ),
+                      const SizedBox(height: 16,),
+                      CustomInputField(
+                          labelText: 'Contact no.',
+                          hintText: 'Your contact number',
+                          isDense: true,
+                          validator: (phone) {
+                            if(phone == null || phone.isEmpty) {
+                              return 'Contact number is required!';
+                            }
+                            phoneController.text = phone;
+                            return null;
+                          }
                       ),
                       const SizedBox(height: 22,),
                       CustomFormButton(innerText: 'Signup',
@@ -208,6 +209,12 @@ class _SignupPageState extends State<SignupPage> {
             password: passwordController.text.trim()
         );
 
+        // create database
+        createDB(username: nameController.text, userEmail: emailController.text, userPassword: passwordController.text,
+          userPhone: phoneController.text, userCourse: courseController.text, userBio: bioController.text,
+          userLocation: locationController.text, userPoint: pointController.text, userToQ: ToQController.text,);
+
+        // go to home interface
         Navigator.pop(context, MaterialPageRoute(builder: (context) => const MainHome()));
 
       } on FirebaseAuthException catch (e) {
@@ -234,5 +241,47 @@ class _SignupPageState extends State<SignupPage> {
         print(e);
       }
     }
+  }
+
+  void _pickProfileImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if(image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() => _profileImage = imageTemporary);
+      
+    } on PlatformException catch (e) {
+      const CustomSnackBar.error(
+        message:
+        "Failed to pick image error.",
+      );
+      debugPrint('Failed to pick image error: $e');
+    }
+  }
+
+  Future<void> createDB({required String username, required String userEmail, required String userPassword,
+    required String userPhone, required String userCourse, required String userBio,
+    required String userLocation, required String userPoint, required String userToQ, }) async {
+
+    // reference to document
+    final userDoc = FirebaseFirestore.instance.collection('users').doc();
+
+    final users = Users(
+      userID: userDoc.id,
+      //userPhoto: _profileImage,
+      userEmail: emailController.text,
+      userPassword: passwordController.text,
+      userName: nameController.text,
+      userPhone: phoneController.text,
+      userCourse: courseController.text,
+      userBio: bioController.text,
+      userLocation: locationController.text,
+      userPoint: pointController.text,
+      userToQ: ToQController.text,
+    );
+    final json = users.toJson();
+
+    await userDoc.set(json);
   }
 }

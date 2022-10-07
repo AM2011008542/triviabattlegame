@@ -16,6 +16,9 @@ Future<void> main()  async {
  );
 
  await Firebase.initializeApp();
+
+ WidgetsFlutterBinding.ensureInitialized();
+
  runApp(myApp());
 }
 
