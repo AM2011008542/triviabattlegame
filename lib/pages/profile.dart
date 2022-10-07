@@ -208,7 +208,7 @@ class _ProfilePage extends State<ProfilePage> {
                             children: [
                               Column(
                                 children: [
-                                  Text('Total Questions',
+                                  Text('Total of Questions',
                                     style: TextStyle(
                                         color: Colors.grey[400],
                                         fontSize: 14.0
@@ -239,7 +239,7 @@ class _ProfilePage extends State<ProfilePage> {
                           ),
                         )
                     )
-                )
+                ),
               ],
             ),
           ],
