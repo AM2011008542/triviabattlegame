@@ -7,7 +7,7 @@ class Users {
   final String userCourse;
   final String userBio;
   final String userLocation;
-  final String userPoint;
+  final int userPoint;
   final String userToQ;
 
   Users({

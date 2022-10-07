@@ -212,7 +212,7 @@ class _SignupPageState extends State<SignupPage> {
         // create database
         createDB(username: nameController.text, userEmail: emailController.text, userPassword: passwordController.text,
           userPhone: phoneController.text, userCourse: courseController.text, userBio: bioController.text,
-          userLocation: locationController.text, userPoint: pointController.text, userToQ: ToQController.text,);
+          userLocation: locationController.text, userPoint: 1000, userToQ: ToQController.text,);
 
         // go to home interface
         Navigator.pop(context, MaterialPageRoute(builder: (context) => const MainHome()));
@@ -262,26 +262,39 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<void> createDB({required String username, required String userEmail, required String userPassword,
     required String userPhone, required String userCourse, required String userBio,
-    required String userLocation, required String userPoint, required String userToQ, }) async {
+    required String userLocation, required int userPoint, required String userToQ, }) async {
 
-    // reference to document
-    final userDoc = FirebaseFirestore.instance.collection('users').doc();
+    try {
+      showTopSnackBar(
+        context,
+        const CustomSnackBar.info(
+          message:
+          "Congratulations, you've received 1000 points!",
+        ),
+      );
+      // reference to document
+      final userDoc = FirebaseFirestore.instance.collection('users').doc();
 
-    final users = Users(
-      userID: userDoc.id,
-      //userPhoto: _profileImage,
-      userEmail: emailController.text,
-      userPassword: passwordController.text,
-      userName: nameController.text,
-      userPhone: phoneController.text,
-      userCourse: courseController.text,
-      userBio: bioController.text,
-      userLocation: locationController.text,
-      userPoint: pointController.text,
-      userToQ: ToQController.text,
-    );
-    final json = users.toJson();
+      final users = Users(
+        userID: userDoc.id,
+        //userPhoto: _profileImage,
+        userEmail: emailController.text,
+        userPassword: passwordController.text,
+        userName: nameController.text,
+        userPhone: phoneController.text,
+        userCourse: courseController.text,
+        userBio: bioController.text,
+        userLocation: locationController.text,
+        userPoint: 1000,
+        userToQ: ToQController.text,
+      );
+      final json = users.toJson();
+      await userDoc.set(json);
 
-    await userDoc.set(json);
+      print("Database successfully created!");
+
+    } on PlatformException catch (e) {
+      debugPrint('Failed to create database');
+    }
   }
 }
