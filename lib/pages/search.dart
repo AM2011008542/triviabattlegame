@@ -53,14 +53,7 @@ class _SearchPage extends State<SearchPage> {
         primarySwatch: Colors.purple,
       ),
       home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.clear),
-          onPressed: () {
-            setState(() {
-              isExecuted = false;
-            });
-          },
-        ),
+        resizeToAvoidBottomInset : false,
         appBar: AppBar(
           actions: [
             GetBuilder<DataController>(
@@ -84,9 +77,19 @@ class _SearchPage extends State<SearchPage> {
           title: TextFormField(
             style: const TextStyle(
                 color: Colors.white),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    color: Colors.white,
+                      onPressed: () {
+                      searchController.clear();
+                        setState(() {
+                          isExecuted = false;
+                        });
+                      },
+                      icon: const Icon(Icons.clear)
+                  ),
                   hintText: "Search user",
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                       color: Colors.white
                   )
               ),
