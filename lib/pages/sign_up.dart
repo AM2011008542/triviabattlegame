@@ -287,10 +287,8 @@ class _SignupPageState extends State<SignupPage> {
       final refRoot = FirebaseStorage.instance.ref();
       Reference refDirImages = refRoot.child("users").child(uid);
 
-      await refDirImages.putFile(File(_profileImage!.path));
+      await refDirImages.putFile(file);
       String image = await refDirImages.getDownloadURL();
-
-      // refRoot.putFile(file);
 
       print("Profile pic successfully uploaded!");
 
