@@ -102,7 +102,7 @@ class _SignupPageState extends State<SignupPage> {
                           isDense: true,
                           validator: (name) {
                             if(name == null || name.isEmpty) {
-                              return 'Name field is required!';
+                              return 'Name is required!';
                             }
                             nameController.text = name;
                             return null;

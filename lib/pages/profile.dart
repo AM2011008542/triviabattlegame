@@ -106,24 +106,10 @@ class _ProfilePage extends State<ProfilePage> {
     });
   }
 
-  bool isPlaying = false;
-  final controller = ConfettiController();
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
   @override
   void initState() {
     super.initState();
     getUserData();
-    controller.addListener(() {
-      setState(() {
-        isPlaying = controller.state == ConfettiControllerState.playing;
-      });
-    });
   }
 
   @override
@@ -347,7 +333,7 @@ class _ProfilePage extends State<ProfilePage> {
 
   void popupAction(String choice){
     if(choice == Constants.editProfile){
-      Navigator.pop(context, MaterialPageRoute(builder: (context) => const EditProfilePage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const EditProfilePage()));
       print('Edit Profile');
     }
     else if(choice == Constants.logOut){
