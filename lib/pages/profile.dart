@@ -166,6 +166,7 @@ class _ProfilePage extends State<ProfilePage> {
     return Card (
       elevation: 10.0,
       child: Container(
+        color: Colors.grey[300],
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,7 +188,7 @@ class _ProfilePage extends State<ProfilePage> {
                             fontSize: 20.0,
                           )),
                       const SizedBox(height: 10.0,),
-                      Text(course,
+                      Text(email,
                         style: const TextStyle(
                           color:Colors.black,
                           fontSize: 15.0,
@@ -199,40 +200,46 @@ class _ProfilePage extends State<ProfilePage> {
 
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    children: [
-                      Text('Total of Questions',
-                        style: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 14.0
-                        ),),
-                      const SizedBox(height: 5.0,),
-                      Text("$ToQ",
-                        style: const TextStyle(
-                          fontSize: 15.0,
-                        ),)
-                    ],
-                  ),
-                  Column(
+              child: Container(
+                padding: const EdgeInsets.all(10.0),
+                color: Colors.green,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
                       children: [
-                        Text('Points',
+                        const Text('Total of Questions',
                           style: TextStyle(
-                              color: Colors.grey[400],
-                              fontSize: 14.0
+                              color: Colors.black,
+                              fontSize: 18.0
                           ),),
-                        const SizedBox(height: 5.0,),
-                        Text('$point',
+                        const SizedBox(height: 10.0,),
+                        Text("$ToQ",
                           style: const TextStyle(
                             fontSize: 15.0,
-                          ),
-                        )
-                      ]
-                  ),
-                ],
-              ),
+                            color: Colors.white,
+                          ),)
+                      ],
+                    ),
+                    Column(
+                        children: [
+                          const Text('Points',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0
+                            ),),
+                          const SizedBox(height: 10.0,),
+                          Text('$point',
+                            style: const TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.white,
+                            ),
+                          )
+                        ]
+                    ),
+                  ],
+                ),
+              )
             ),
 
             const SizedBox(height: 20.0,),
