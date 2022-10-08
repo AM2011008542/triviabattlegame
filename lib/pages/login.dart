@@ -102,9 +102,6 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () async {
                             hasInternet = await InternetConnectionChecker().hasConnection;
 
-                            //final color = hasInternet ? Colors.green : Colors.redAccent;
-                            //final text = hasInternet ? _handleLoginUser() : 'No Internet';
-
                             if(hasInternet == true){
                               _handleLoginUser();
                             } else {

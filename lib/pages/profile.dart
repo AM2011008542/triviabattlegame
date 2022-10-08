@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confetti/confetti.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +10,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:triviabattlegame/pages/users.dart';
 import '../animated/constants.dart';
+import '../animated/custom_form_button.dart';
 import '../auth_service.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -99,11 +103,24 @@ class _ProfilePage extends State<ProfilePage> {
     });
   }
 
-  // Get data from database
+  bool isPlaying = false;
+  final controller = ConfettiController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
     getUserData();
+    controller.addListener(() {
+      setState(() {
+        isPlaying = controller.state == ConfettiControllerState.playing;
+      });
+    });
   }
 
   @override
@@ -133,6 +150,7 @@ class _ProfilePage extends State<ProfilePage> {
             ]
         ),
         body: Stack(
+          alignment: Alignment.topCenter,
           children: [
             ClipPath(
               clipper: WaveClipperTwo(),
@@ -198,48 +216,46 @@ class _ProfilePage extends State<ProfilePage> {
                 )
             ),
 
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                padding: const EdgeInsets.all(10.0),
-                color: Colors.green,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
+            const SizedBox(height: 20.0,),
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              color: Colors.green,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      const Text('Total of Questions',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0
+                        ),),
+                      const SizedBox(height: 10.0,),
+                      Text("$ToQ",
+                        style: const TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.white,
+                        ),)
+                    ],
+                  ),
+                  Column(
                       children: [
-                        const Text('Total of Questions',
+                        const Text('Points',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 18.0
                           ),),
                         const SizedBox(height: 10.0,),
-                        Text("$ToQ",
+                        Text('$point',
                           style: const TextStyle(
                             fontSize: 15.0,
                             color: Colors.white,
-                          ),)
-                      ],
-                    ),
-                    Column(
-                        children: [
-                          const Text('Points',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0
-                            ),),
-                          const SizedBox(height: 10.0,),
-                          Text('$point',
-                            style: const TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.white,
-                            ),
-                          )
-                        ]
-                    ),
-                  ],
-                ),
-              )
+                          ),
+                        )
+                      ]
+                  ),
+                ],
+              ),
             ),
 
             const SizedBox(height: 20.0,),
@@ -255,7 +271,7 @@ class _ProfilePage extends State<ProfilePage> {
               ),
             ),
 
-            const SizedBox(height: 20.0,),
+            const SizedBox(height: 10.0,),
             const Text("Name :"),
             TextFormField(
               enabled: false,
