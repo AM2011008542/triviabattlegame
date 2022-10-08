@@ -38,6 +38,7 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController locationController = TextEditingController();
   final TextEditingController pointController = TextEditingController();
   final TextEditingController ToQController = TextEditingController();
+  final TextEditingController imageController = TextEditingController();
 
   final _signupFormKey = GlobalKey<FormState>();
 
@@ -196,23 +197,10 @@ class _SignupPageState extends State<SignupPage> {
             password: passwordController.text.trim()
         );
 
-        // get current user id
-        final FirebaseAuth auth = FirebaseAuth.instance;
-        final User user = auth.currentUser!;
-        final uid = user.uid;
-
-        // upload profile pic to database
-        final file = File(_profileImage!.path);
-
-        final ref = FirebaseStorage.instance.ref().child("users").child(uid);
-        ref.putFile(file);
-
-        print("Profile pic successfully uploaded!");
-
         // create database
         createDB(userName: nameController.text, userEmail: emailController.text, userPassword: passwordController.text,
             userPhone: phoneController.text, userCourse: courseController.text, userBio: bioController.text,
-            userLocation: locationController.text, userPoint: 1000, userToQ: 0);
+            userLocation: locationController.text, userPoint: 1000, userToQ: 0, userImage: imageController.text);
 
         // go to home interface
         Navigator.pop(context, MaterialPageRoute(builder: (context) => const MainHome()));
@@ -276,7 +264,8 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<void> createDB({required String userName, required String userEmail, required String userPassword,
     required String userPhone, required String userCourse, required String userBio,
-    required String userLocation, required int userPoint, required int userToQ, }) async {
+    required String userLocation, required int userPoint, required int userToQ, required String userImage}
+      ) async {
 
     try {
       showTopSnackBar(
@@ -287,10 +276,23 @@ class _SignupPageState extends State<SignupPage> {
         ),
       );
 
+      // get current user id
       final FirebaseAuth auth = FirebaseAuth.instance;
-
       final User user = auth.currentUser!;
       final uid = user.uid;
+
+      // upload profile pic to database
+      final file = File(_profileImage!.path);
+
+      final refRoot = FirebaseStorage.instance.ref();
+      Reference refDirImages = refRoot.child("users").child(uid);
+
+      await refDirImages.putFile(File(_profileImage!.path));
+      String image = await refDirImages.getDownloadURL();
+
+      // refRoot.putFile(file);
+
+      print("Profile pic successfully uploaded!");
 
       // reference to document
       final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
@@ -307,6 +309,7 @@ class _SignupPageState extends State<SignupPage> {
         userLocation: locationController.text,
         userPoint: 1000,
         userToQ: 0,
+        imageUrl: image,
       );
       final json = users.toJson();
       await userDoc.set(json);

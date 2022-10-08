@@ -32,6 +32,7 @@ class _ProfilePage extends State<ProfilePage> {
   late String location;
   late int point;
   late int ToQ;
+  late String image;
 
   List<Users>userList = [];
 
@@ -53,10 +54,11 @@ class _ProfilePage extends State<ProfilePage> {
       location = ds.data()!["userLocation"];
       point = ds.data()!["userPoint"];
       ToQ = ds.data()!["userToQ"];
+      image = ds.data()!["imageUrl"];
 
       Users users = Users(userName: name, userEmail: email, userPassword: password,
           userPhone: phone, userCourse: course, userBio: bio, userLocation: location,
-          userPoint: point, userToQ: ToQ);
+          userPoint: point, userToQ: ToQ, imageUrl: image);
 
       userList.add(users);
 
@@ -89,10 +91,11 @@ class _ProfilePage extends State<ProfilePage> {
       location = ds.data()!["userLocation"];
       point = ds.data()!["userPoint"];
       ToQ = ds.data()!["userToQ"];
+      image = ds.data()!["imageUrl"];
 
       Users users = Users(userName: name, userEmail: email, userPassword: password,
           userPhone: phone, userCourse: course, userBio: bio, userLocation: location,
-          userPoint: point, userToQ: ToQ);
+          userPoint: point, userToQ: ToQ, imageUrl: image);
 
       userList.add(users);
 

@@ -9,6 +9,7 @@ class Users {
   final String userLocation;
   final int userPoint;
   final int userToQ;
+  final String imageUrl;
 
   Users({
     this.userID = '',
@@ -21,6 +22,7 @@ class Users {
     required this.userLocation,
     required this.userPoint,
     required this.userToQ,
+    required this.imageUrl,
   });
 
   Map<String, dynamic> toJson() => {
@@ -34,5 +36,6 @@ class Users {
     'userLocation': userLocation,
     'userPoint': userPoint,
     'userToQ': userToQ,
+    'imageUrl': imageUrl,
   };
 }

@@ -34,6 +34,7 @@ class _EditProfilePage extends State<EditProfilePage> {
   late String location;
   late int point;
   late int ToQ;
+  late String image;
 
   List<Users>userList = [];
 
@@ -66,10 +67,11 @@ class _EditProfilePage extends State<EditProfilePage> {
       location = ds.data()!["userLocation"];
       point = ds.data()!["userPoint"];
       ToQ = ds.data()!["userToQ"];
+      image = ds.data()!["imageUrl"];
 
       Users users = Users(userName: name, userEmail: email, userPassword: password,
           userPhone: phone, userCourse: course, userBio: bio, userLocation: location,
-          userPoint: point, userToQ: ToQ);
+          userPoint: point, userToQ: ToQ, imageUrl: image);
 
       userList.add(users);
 
@@ -181,7 +183,8 @@ class _EditProfilePage extends State<EditProfilePage> {
                       isDense: true,
                       validator: (name) {
                         if(name == null || name.isEmpty) {
-                          return null;
+                          nameController.text = name!;
+                          return 'Name is required!';
                         }
                         nameController.text = name;
                         return null;
@@ -283,6 +286,8 @@ class _EditProfilePage extends State<EditProfilePage> {
     final User user = auth.currentUser!;
     final uid = user.uid;
 
+
+
     await FirebaseFirestore.instance.collection('users').doc(uid).get().then((ds) {
       email = ds.data()!["userEmail"];
       password = ds.data()!["userPassword"];
@@ -293,10 +298,11 @@ class _EditProfilePage extends State<EditProfilePage> {
       location = ds.data()!["userLocation"];
       point = ds.data()!["userPoint"];
       ToQ = ds.data()!["userToQ"];
+      image = ds.data()!["imageUrl"];
 
       Users users = Users(userName: name, userEmail: email, userPassword: password,
           userPhone: phone, userCourse: course, userBio: bio, userLocation: location,
-          userPoint: point, userToQ: ToQ);
+          userPoint: point, userToQ: ToQ, imageUrl: image);
 
       userList.add(users);
 
