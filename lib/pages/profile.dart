@@ -32,6 +32,7 @@ class _ProfilePage extends State<ProfilePage> {
 
   // retrieve data from firestore
   getUserData() async {
+    await Future.delayed(const Duration(seconds: 1));
     final FirebaseAuth auth = FirebaseAuth.instance;
 
     final User user = auth.currentUser!;
@@ -54,10 +55,11 @@ class _ProfilePage extends State<ProfilePage> {
 
       userList.add(users);
 
-      setState(() {
-        print('Length : ${userList.length}');
-      });
+      print(userList.length);
 
+      setState(() {
+        print("Load user data");
+      });
     }).catchError((e) {
       print(e);
     });
@@ -87,10 +89,11 @@ class _ProfilePage extends State<ProfilePage> {
 
       userList.add(users);
 
-      setState(() {
-        print('Length : ${userList.length}');
-      });
+      print(userList.length);
 
+      setState(() {
+        print("Refresh user data");
+      });
     }).catchError((e) {
       print(e);
     });
@@ -154,6 +157,7 @@ class _ProfilePage extends State<ProfilePage> {
                   )
               ),
             ),
+
           ],
         ),
       ),
