@@ -176,14 +176,28 @@ class _EditProfilePage extends State<EditProfilePage> {
                   ),
                   const SizedBox(height: 16,),
                   CustomInputField(
-                      labelText: 'Name',
+                      labelText: 'Name :',
                       hintText: name,
                       isDense: true,
                       validator: (name) {
                         if(name == null || name.isEmpty) {
-                          return 'Name field is required!';
+                          return null;
                         }
                         nameController.text = name;
+                        return null;
+                      }
+                  ),
+
+                  /*const SizedBox(height: 16,),
+                  CustomInputField(
+                      labelText: 'Contact Number :',
+                      hintText: phone,
+                      isDense: true,
+                      validator: (phone) {
+                        if(phone == null || phone.isEmpty) {
+                          return 'Contact number is required!';
+                        }
+                        nameController.text = phone;
                         return null;
                       }
                   ),
@@ -228,21 +242,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                         nameController.text = name;
                         return null;
                       }
-                  ),
-
-                  const SizedBox(height: 16,),
-                  CustomInputField(
-                      labelText: 'Name',
-                      hintText: 'Your name',
-                      isDense: true,
-                      validator: (name) {
-                        if(name == null || name.isEmpty) {
-                          return 'Name field is required!';
-                        }
-                        nameController.text = name;
-                        return null;
-                      }
-                  ),
+                  ),*/
                   const SizedBox(height: 22,),
                   CustomFormButton(innerText: 'Submit',
                       onPressed: () async {
@@ -268,154 +268,6 @@ class _EditProfilePage extends State<EditProfilePage> {
       ),
     );
   }
-
-  /*@override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xffEEF1F3),
-        body: SingleChildScrollView(
-          child: Form(
-            key: _editProfile,
-            child: Column(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(20),),
-                  ),
-                  child: Column(
-                    children: [
-                      const PageHeading(title: 'Edit Profile',),
-                      SizedBox(
-                        width: 130,
-                        height: 130,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey.shade200,
-                          backgroundImage: _profileImage != null ? FileImage(_profileImage!) : null,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                bottom: 5,
-                                right: 5,
-                                child: GestureDetector(
-                                  onTap: pickProfileImage,
-                                  child: Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue.shade400,
-                                      border: Border.all(color: Colors.white, width: 3),
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                    child: const Icon(
-                                      Icons.camera_alt_sharp,
-                                      color: Colors.white,
-                                      size: 25,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16,),
-                      CustomInputField(
-                          labelText: 'Name',
-                          hintText: name,
-                          isDense: true,
-                          validator: (name) {
-                            if(name == null || name.isEmpty) {
-                              return 'Name field is required!';
-                            }
-                            nameController.text = name;
-                            return null;
-                          }
-                      ),
-
-                      const SizedBox(height: 16,),
-                      CustomInputField(
-                          labelText: 'Name',
-                          hintText: 'Your name',
-                          isDense: true,
-                          validator: (name) {
-                            if(name == null || name.isEmpty) {
-                              return 'Name field is required!';
-                            }
-                            nameController.text = name;
-                            return null;
-                          }
-                      ),
-
-                      const SizedBox(height: 16,),
-                      CustomInputField(
-                          labelText: 'Name',
-                          hintText: 'Your name',
-                          isDense: true,
-                          validator: (name) {
-                            if(name == null || name.isEmpty) {
-                              return 'Name field is required!';
-                            }
-                            nameController.text = name;
-                            return null;
-                          }
-                      ),
-
-                      const SizedBox(height: 16,),
-                      CustomInputField(
-                          labelText: 'Name',
-                          hintText: 'Your name',
-                          isDense: true,
-                          validator: (name) {
-                            if(name == null || name.isEmpty) {
-                              return 'Name field is required!';
-                            }
-                            nameController.text = name;
-                            return null;
-                          }
-                      ),
-
-                      const SizedBox(height: 16,),
-                      CustomInputField(
-                          labelText: 'Name',
-                          hintText: 'Your name',
-                          isDense: true,
-                          validator: (name) {
-                            if(name == null || name.isEmpty) {
-                              return 'Name field is required!';
-                            }
-                            nameController.text = name;
-                            return null;
-                          }
-                      ),
-                      const SizedBox(height: 22,),
-                      CustomFormButton(innerText: 'Submit',
-                          onPressed: () async {
-                            hasInternet = await InternetConnectionChecker().hasConnection;
-                            if(hasInternet == true) {
-                              checkProfilePic();
-                            } else {
-                              showTopSnackBar(
-                                context,
-                                const CustomSnackBar.error(
-                                  message:
-                                  "No internet connection.",
-                                ),
-                              );
-                            }
-                          }),
-                      const SizedBox(height: 48,),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }*/
 
   @override
   void initState() {
