@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+import 'package:triviabattlegame/pages/edit_profile.dart';
 import 'package:triviabattlegame/pages/users.dart';
 import '../animated/constants.dart';
 import '../animated/custom_form_button.dart';
@@ -70,6 +71,8 @@ class _ProfilePage extends State<ProfilePage> {
   }
 
   Future<void> loadRefresh() async {
+    userList.clear();
+
     await Future.delayed(const Duration(seconds: 1));
     final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -259,30 +262,58 @@ class _ProfilePage extends State<ProfilePage> {
             ),
 
             const SizedBox(height: 20.0,),
-            const Text("Email :"),
-            TextFormField (
+            const Text("Bio :"),
+            TextFormField(
               enabled: false,
               decoration: InputDecoration(
-                  hintText: email,
+                  hintText: bio,
                   icon: const Icon(
                     Icons.person,
-                    color: Colors.grey,
+                    color: Colors.blue,
                   )
               ),
             ),
 
-            const SizedBox(height: 10.0,),
-            const Text("Name :"),
+            const SizedBox(height: 20.0,),
+            const Text("Contact Number :"),
             TextFormField(
               enabled: false,
               decoration: InputDecoration(
-                  hintText: name,
+                  hintText: phone,
                   icon: const Icon(
-                    Icons.email,
-                    color: Colors.green,
+                    Icons.phone,
+                    color: Colors.blue,
                   )
               ),
             ),
+
+            const SizedBox(height: 20.0,),
+            const Text("Course :"),
+            TextFormField(
+              enabled: false,
+              decoration: InputDecoration(
+                  hintText: course,
+                  icon: const Icon(
+                    Icons.book,
+                    color: Colors.blue,
+                  )
+              ),
+            ),
+
+            const SizedBox(height: 20.0,),
+            const Text("Location :"),
+            TextFormField(
+              enabled: false,
+              decoration: InputDecoration(
+                  hintText: location,
+                  icon: const Icon(
+                    Icons.map,
+                    color: Colors.blue,
+                  )
+              ),
+            ),
+
+            const SizedBox(height: 80.0,),
           ],
         ),
       ),
@@ -316,6 +347,7 @@ class _ProfilePage extends State<ProfilePage> {
 
   void popupAction(String choice){
     if(choice == Constants.editProfile){
+      Navigator.pop(context, MaterialPageRoute(builder: (context) => const EditProfilePage()));
       print('Edit Profile');
     }
     else if(choice == Constants.logOut){

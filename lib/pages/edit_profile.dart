@@ -1,12 +1,15 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:triviabattlegame/pages/users.dart';
 import '../animated/custom_form_button.dart';
 import '../animated/custom_input_field.dart';
 import '../animated/page_header.dart';
@@ -28,19 +31,15 @@ class _EditProfilePage extends State<EditProfilePage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController courseController = TextEditingController();
+  final TextEditingController bioController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+  final TextEditingController pointController = TextEditingController();
+  final TextEditingController ToQController = TextEditingController();
+
   final _signupFormKey = GlobalKey<FormState>();
-
-  Future _pickProfileImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if(image == null) return;
-
-      final imageTemporary = File(image.path);
-      setState(() => _profileImage = imageTemporary);
-    } on PlatformException catch (e) {
-      debugPrint('Failed to pick image error: $e');
-    }
-  }
 
   bool hasInternet = false;
 
@@ -75,7 +74,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                                 bottom: 5,
                                 right: 5,
                                 child: GestureDetector(
-                                  onTap: _pickProfileImage,
+                                  onTap: pickProfileImage,
                                   child: Container(
                                     height: 50,
                                     width: 50,
@@ -105,6 +104,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                             if(name == null || name.isEmpty) {
                               return 'Name field is required!';
                             }
+                            nameController.text = name;
                             return null;
                           }
                       ),
@@ -121,18 +121,6 @@ class _EditProfilePage extends State<EditProfilePage> {
                               return 'Please enter a valid email';
                             }
                             emailController.text = email;
-                            return null;
-                          }
-                      ),
-                      const SizedBox(height: 16,),
-                      CustomInputField(
-                          labelText: 'Contact no.',
-                          hintText: 'Your contact number',
-                          isDense: true,
-                          validator: (phone) {
-                            if(phone == null || phone.isEmpty) {
-                              return 'Contact number is required!';
-                            }
                             return null;
                           }
                       ),
@@ -155,8 +143,8 @@ class _EditProfilePage extends State<EditProfilePage> {
                       CustomFormButton(innerText: 'Signup',
                           onPressed: () async {
                             hasInternet = await InternetConnectionChecker().hasConnection;
-                            if(hasInternet == true){
-                              _handleSignUpUser();
+                            if(hasInternet == true) {
+                              checkProfilePic();
                             } else {
                               showTopSnackBar(
                                 context,
@@ -208,6 +196,25 @@ class _EditProfilePage extends State<EditProfilePage> {
             password: passwordController.text.trim()
         );
 
+        // get current user id
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        final User user = auth.currentUser!;
+        final uid = user.uid;
+
+        // upload profile pic to database
+        final file = File(_profileImage!.path);
+
+        final ref = FirebaseStorage.instance.ref().child("users").child(uid);
+        ref.putFile(file);
+
+        print("Profile pic successfully uploaded!");
+
+        // create database
+        createDB(userName: nameController.text, userEmail: emailController.text, userPassword: passwordController.text,
+            userPhone: phoneController.text, userCourse: courseController.text, userBio: bioController.text,
+            userLocation: locationController.text, userPoint: 1000, userToQ: 0);
+
+        // go to home interface
         Navigator.pop(context, MaterialPageRoute(builder: (context) => const MainHome()));
 
       } on FirebaseAuthException catch (e) {
@@ -233,6 +240,81 @@ class _EditProfilePage extends State<EditProfilePage> {
       } catch (e) {
         print(e);
       }
+    }
+  }
+
+  void pickProfileImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if(image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() => _profileImage = imageTemporary);
+
+    } on PlatformException catch (e) {
+      const CustomSnackBar.error(
+        message:
+        "Failed to pick image error.",
+      );
+      debugPrint('Failed to pick image error: $e');
+    }
+  }
+
+  void checkProfilePic() async {
+    if(_profileImage == null) {
+      showTopSnackBar(
+        context,
+        const CustomSnackBar.error(
+          message:
+          "Profile picture is empty!",
+        ),
+      );
+    } else if(_profileImage != null) {
+      _handleSignUpUser();
+    }
+  }
+
+  Future<void> createDB({required String userName, required String userEmail, required String userPassword,
+    required String userPhone, required String userCourse, required String userBio,
+    required String userLocation, required int userPoint, required int userToQ, }) async {
+
+    try {
+      showTopSnackBar(
+        context,
+        const CustomSnackBar.success(
+          message:
+          "Congratulations, you've received 1000 points!",
+        ),
+      );
+
+      final FirebaseAuth auth = FirebaseAuth.instance;
+
+      final User user = auth.currentUser!;
+      final uid = user.uid;
+
+      // reference to document
+      final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
+
+      final users = Users(
+        userID: userDoc.id,
+        //userPhoto: _profileImage,
+        userEmail: emailController.text,
+        userPassword: passwordController.text,
+        userName: nameController.text,
+        userPhone: phoneController.text,
+        userCourse: courseController.text,
+        userBio: bioController.text,
+        userLocation: locationController.text,
+        userPoint: 1000,
+        userToQ: 0,
+      );
+      final json = users.toJson();
+      await userDoc.set(json);
+
+      print("Database successfully created!");
+
+    } on PlatformException catch (e) {
+      debugPrint('Failed to create database');
     }
   }
 }
