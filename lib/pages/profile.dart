@@ -147,7 +147,7 @@ class _ProfilePage extends State<ProfilePage> {
                   itemCount: userList.length,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (_, index) {
-                    return userUI(email, name);
+                    return userUI(email, name, phone, course, bio, location, point, ToQ);
                   }
               ),
               onRefresh: () async {
@@ -161,7 +161,8 @@ class _ProfilePage extends State<ProfilePage> {
   }
 
   // User profile design
-  Widget userUI(String email, String name) {
+  Widget userUI(String email, String name, String phone, String course, String bio, String location,
+      int point, int ToQ ) {
     return Card (
       elevation: 10.0,
       child: Container(
@@ -169,6 +170,72 @@ class _ProfilePage extends State<ProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            SizedBox(
+                width: double.infinity,
+                child: Column(
+                    children: [
+                      const SizedBox(height: 10.0,),
+                      const CircleAvatar(
+                        radius: 65.0,
+                        backgroundImage: AssetImage('assets/tbag-logo-1.png'),
+                        backgroundColor: Colors.black,
+                      ),
+                      const SizedBox(height: 10.0,),
+                      Text(name,
+                          style: const TextStyle(
+                            color:Colors.black,
+                            fontSize: 20.0,
+                          )),
+                      const SizedBox(height: 10.0,),
+                      Text(course,
+                        style: const TextStyle(
+                          color:Colors.black,
+                          fontSize: 15.0,
+                        ),
+                      )
+                    ]
+                )
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      Text('Total of Questions',
+                        style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 14.0
+                        ),),
+                      const SizedBox(height: 5.0,),
+                      Text("$ToQ",
+                        style: const TextStyle(
+                          fontSize: 15.0,
+                        ),)
+                    ],
+                  ),
+                  Column(
+                      children: [
+                        Text('Points',
+                          style: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 14.0
+                          ),),
+                        const SizedBox(height: 5.0,),
+                        Text('$point',
+                          style: const TextStyle(
+                            fontSize: 15.0,
+                          ),
+                        )
+                      ]
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 20.0,),
             const Text("Email :"),
             TextFormField (
               enabled: false,
@@ -193,7 +260,6 @@ class _ProfilePage extends State<ProfilePage> {
                   )
               ),
             ),
-
           ],
         ),
       ),
