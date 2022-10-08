@@ -50,26 +50,26 @@ class _BoxState extends State<Box> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 400,
       child: Column(
         children: <Widget>[
           RotationTransition(
             turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
             child: AnimatedContainer(
-              duration: Duration(milliseconds: 1000),
+              duration: const Duration(milliseconds: 1000),
               width: width,
               height: height,
               color: Colors.orangeAccent,
             ),
           ),
-          SizedBox(height: 50),
-          RaisedButton(
-            child: Text("go"),
+          const SizedBox(height: 50),
+          ElevatedButton (
+            child: const Text("go"),
             onPressed: () => _controller.forward(),
           ),
-          RaisedButton(
-            child: Text("stop"),
+          ElevatedButton (
+            child: const Text("stop"),
             onPressed: () => _controller.reset(),
           ),
         ],

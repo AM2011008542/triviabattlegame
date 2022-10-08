@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:triviabattlegame/trivia//models/category.dart';
 import 'package:triviabattlegame/trivia//models/question.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -126,9 +128,17 @@ class _QuizPageState extends State<QuizPage> {
 
   void _nextSubmit() {
     if (_answers[_currentIndex] == null) {
-      _key.currentState?.showSnackBar(const SnackBar( //SnackBar fix
+      /*_key.currentState?.showSnackBar(const SnackBar(
         content: Text("You must select an answer to continue."),
-      ));
+      ));*/
+
+      showTopSnackBar(
+        context,
+        const CustomSnackBar.error(
+          message:
+          "You must select an answer to continue.",
+        ),
+      );
       return;
     }
     if (_currentIndex < (widget.questions.length - 1)) {
