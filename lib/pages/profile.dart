@@ -54,7 +54,9 @@ class _ProfilePage extends State<ProfilePage> {
 
       userList.add(users);
 
-      print(userList.length);
+      setState(() {
+        print('Length : ${userList.length}');
+      });
 
     }).catchError((e) {
       print(e);
@@ -85,11 +87,10 @@ class _ProfilePage extends State<ProfilePage> {
 
       userList.add(users);
 
-      print(userList.length);
-
       setState(() {
-        print("Refresh user data");
+        print('Length : ${userList.length}');
       });
+
     }).catchError((e) {
       print(e);
     });
@@ -100,7 +101,6 @@ class _ProfilePage extends State<ProfilePage> {
   void initState() {
     super.initState();
     getUserData();
-    loadRefresh();
   }
 
   @override
@@ -154,7 +154,6 @@ class _ProfilePage extends State<ProfilePage> {
                   )
               ),
             ),
-
           ],
         ),
       ),
