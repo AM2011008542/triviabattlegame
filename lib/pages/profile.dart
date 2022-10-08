@@ -108,18 +108,54 @@ class _ProfilePage extends State<ProfilePage> {
 
   @override
   build(BuildContext context) {
-    return Scaffold(
-      body: RefreshIndicator(
-        child: userList.isEmpty ? const Center(child: SpinKitCircle(color: Colors.green)) : ListView.builder (
-            itemCount: userList.length,
-            physics: const BouncingScrollPhysics(),
-            itemBuilder: (_, index) {
-              return userUI(email, name);
-            }
+    return MaterialApp(
+      title: "Profile interface",
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+            elevation: 0,
+            title: const Text("Profile"),
+            centerTitle: true,
+            actions: <Widget>[
+              PopupMenuButton<String>(
+                onSelected: popupAction,
+                itemBuilder: (BuildContext context){
+                  return Constants.choices.map((String choice){
+                    return PopupMenuItem<String>(
+                      value: choice,
+                      child: Text(choice),
+                    );
+                  }).toList();
+                },
+              )
+            ]
         ),
-        onRefresh: () async {
-          await loadRefresh();
-        },
+        body: Stack(
+          children: [
+            ClipPath(
+              clipper: WaveClipperTwo(),
+              child: Container(
+                decoration:
+                const BoxDecoration(color: Colors.green),
+                height: 200,
+              ),
+            ),
+            RefreshIndicator(
+              child: userList.isEmpty ? const Center(child: SpinKitCircle(color: Colors.green)) : ListView.builder (
+                  itemCount: userList.length,
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (_, index) {
+                    return userUI(email, name);
+                  }
+              ),
+              onRefresh: () async {
+                await loadRefresh();
+              },
+            ),
+          ],
+        )
       ),
     );
   }
