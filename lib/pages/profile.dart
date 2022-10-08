@@ -157,7 +157,7 @@ class _ProfilePage extends State<ProfilePage> {
                   itemCount: userList.length,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (_, index) {
-                    return userUI(email, name, phone, course, bio, location, point, ToQ);
+                    return userUI(email, name, phone, course, bio, location, point, ToQ, image);
                   }
               ),
               onRefresh: () async {
@@ -172,7 +172,7 @@ class _ProfilePage extends State<ProfilePage> {
 
   // User profile design
   Widget userUI(String email, String name, String phone, String course, String bio, String location,
-      int point, int ToQ ) {
+      int point, int ToQ, String image ) {
     return Card (
       elevation: 10.0,
       child: Container(
@@ -186,9 +186,9 @@ class _ProfilePage extends State<ProfilePage> {
                 child: Column(
                     children: [
                       const SizedBox(height: 10.0,),
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 65.0,
-                        backgroundImage: AssetImage('assets/tbag-logo-1.png'),
+                        backgroundImage: NetworkImage(image),
                         backgroundColor: Colors.black,
                       ),
                       const SizedBox(height: 10.0,),

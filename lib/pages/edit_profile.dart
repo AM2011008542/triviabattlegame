@@ -362,6 +362,10 @@ class _EditProfilePage extends State<EditProfilePage> {
           "User profile update successfully!",
         ),
       );
+
+      SystemChrome.setEnabledSystemUIMode(
+          SystemUiMode.leanBack
+      );
     }
   }
 
