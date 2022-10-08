@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+import 'package:triviabattlegame/pages/users.dart';
 import '../animated/constants.dart';
 import '../auth_service.dart';
 
@@ -17,24 +19,77 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePage extends State<ProfilePage> {
 
   late String email;
+  late String password;
   late String name;
   late String phone;
   late String course;
   late String bio;
   late String location;
-  late int pointController;
+  late int point;
   late int ToQ;
 
+  List<Users>userList = [];
+
   // retrieve data from firestore
-  _getUserData() async {
+  getUserData() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
 
     final User user = auth.currentUser!;
     final uid = user.uid;
 
     await FirebaseFirestore.instance.collection('users').doc(uid).get().then((ds) {
+      email = ds.data()!["userEmail"];
+      password = ds.data()!["userPassword"];
       name = ds.data()!["userName"];
+      phone = ds.data()!["userPhone"];
       course = ds.data()!["userCourse"];
+      bio = ds.data()!["userBio"];
+      location = ds.data()!["userLocation"];
+      point = ds.data()!["userPoint"];
+      ToQ = ds.data()!["userToQ"];
+
+      Users users = Users(userName: name, userEmail: email, userPassword: password,
+          userPhone: phone, userCourse: course, userBio: bio, userLocation: location,
+          userPoint: point, userToQ: ToQ);
+
+      userList.add(users);
+
+      print(userList.length);
+
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  Future<void> loadRefresh() async {
+    await Future.delayed(const Duration(seconds: 1));
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+    final User user = auth.currentUser!;
+    final uid = user.uid;
+
+    await FirebaseFirestore.instance.collection('users').doc(uid).get().then((ds) {
+      email = ds.data()!["userEmail"];
+      password = ds.data()!["userPassword"];
+      name = ds.data()!["userName"];
+      phone = ds.data()!["userPhone"];
+      course = ds.data()!["userCourse"];
+      bio = ds.data()!["userBio"];
+      location = ds.data()!["userLocation"];
+      point = ds.data()!["userPoint"];
+      ToQ = ds.data()!["userToQ"];
+
+      Users users = Users(userName: name, userEmail: email, userPassword: password,
+          userPhone: phone, userCourse: course, userBio: bio, userLocation: location,
+          userPoint: point, userToQ: ToQ);
+
+      userList.add(users);
+
+      print(userList.length);
+
+      setState(() {
+        print("Refresh user data");
+      });
     }).catchError((e) {
       print(e);
     });
@@ -44,243 +99,62 @@ class _ProfilePage extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _getUserData();
+    getUserData();
+    loadRefresh();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Profile interface",
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-            elevation: 0,
-            title: const Text("Profile"),
-            centerTitle: true,
-            actions: <Widget>[
-              PopupMenuButton<String>(
-                onSelected: popupAction,
-                itemBuilder: (BuildContext context){
-                  return Constants.choices.map((String choice){
-                    return PopupMenuItem<String>(
-                      value: choice,
-                      child: Text(choice),
-                    );
-                  }).toList();
-                },
-              )
-            ]
+  build(BuildContext context) {
+    return Scaffold(
+      body: RefreshIndicator(
+        child: userList.isEmpty ? const Center(child: SpinKitCircle(color: Colors.green)) : ListView.builder (
+            itemCount: userList.length,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (_, index) {
+              return userUI(email, name);
+            }
         ),
-        body: Stack(
+        onRefresh: () async {
+          await loadRefresh();
+        },
+      ),
+    );
+  }
+
+  // User profile design
+  Widget userUI(String email, String name) {
+    return Card (
+      elevation: 10.0,
+      child: Container(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            ClipPath(
-              clipper: WaveClipperTwo(),
-              child: Container(
-                decoration:
-                const BoxDecoration(color: Colors.green),
-                height: 200,
+            const Text("Email :"),
+            TextFormField (
+              enabled: false,
+              decoration: InputDecoration(
+                  hintText: email,
+                  icon: const Icon(
+                    Icons.person,
+                    color: Colors.grey,
+                  )
               ),
             ),
-            Stack(
-              children: [
-                Column(
-                  children: [
-                    Expanded(
-                      flex:5,
-                      child:SizedBox(
-                        width: double.infinity,
-                        child: FutureBuilder(
-                          future: _getUserData(),
-                          builder: (context, snapshot) {
-                            if(snapshot.connectionState != ConnectionState.done) {
-                              return const Text("Loading data...");
-                            }
-                            return Column(
-                                children: [
-                                  const SizedBox(height: 50.0,),
-                                  const CircleAvatar(
-                                    radius: 65.0,
-                                    backgroundImage: AssetImage('assets/tbag-logo-1.png'),
-                                    backgroundColor: Colors.black,
-                                  ),
-                                  const SizedBox(height: 10.0,),
-                                  Text(name,
-                                      style: const TextStyle(
-                                        color:Colors.black,
-                                        fontSize: 20.0,
-                                      )),
-                                  const SizedBox(height: 10.0,),
-                                  Text(course,
-                                    style: const TextStyle(
-                                      color:Colors.black,
-                                      fontSize: 15.0,
-                                    ),
-                                  )
-                                ]
-                            );
-                          },
-                        )
-                      ),
-                    ),
 
-                    /*Expanded(
-                      flex: 5,
-                      child: Container(
-                        color: Colors.grey[200],
-                        child: Center(
-                            child: Card(
-                                margin: const EdgeInsets.fromLTRB(10, 0, 0, 20),
-                                child: SizedBox(
-                                    width: 310.0,
-                                    height:290.0,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          const Text("Information",
-                                            style: TextStyle(
-                                              fontSize: 17.0,
-                                              fontWeight: FontWeight.w800,
-                                            ),
-                                          ),
-                                          Divider(color: Colors.grey[300],),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                Icons.home,
-                                                color: Colors.blueAccent[400],
-                                                size: 35,
-                                              ),
-                                              const SizedBox(width: 40.0,),
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text("Bio",
-                                                    style: TextStyle(
-                                                      fontSize: 15.0,
-                                                    ),),
-                                                  Text("FairyTail, Magnolia",
-                                                    style: TextStyle(
-                                                      fontSize: 12.0,
-                                                      color: Colors.grey[400],
-                                                    ),)
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          const SizedBox(height: 40.0,),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                Icons.auto_awesome,
-                                                color: Colors.yellowAccent[400],
-                                                size: 35,
-                                              ),
-                                              const SizedBox(width: 40.0,),
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text("Phone",
-                                                    style: TextStyle(
-                                                      fontSize: 15.0,
-                                                    ),),
-                                                  Text("Spatial & Sword Magic, Telekinesis",
-                                                    style: TextStyle(
-                                                      fontSize: 12.0,
-                                                      color: Colors.grey[400],
-                                                    ),)
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          const SizedBox(height: 40.0,),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                Icons.favorite,
-                                                color: Colors.pinkAccent[400],
-                                                size: 35,
-                                              ),
-                                              const SizedBox(width: 40.0,),
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text("Location",
-                                                    style: TextStyle(
-                                                      fontSize: 15.0,
-                                                    ),),
-                                                  Text("Eating cakes",
-                                                    style: TextStyle(
-                                                      fontSize: 12.0,
-                                                      color: Colors.grey[400],
-                                                    ),)
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          const SizedBox(height: 40.0,)
-                                        ],
-                                      ),
-                                    )
-                                )
-                            )
-                        ),
-                      ),
-                    ),*/
-                  ],
-                ),
-                Positioned(
-                    top:MediaQuery.of(context).size.height*0.33,
-                    left: 20.0,
-                    right: 20.0,
-                    child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                children: [
-                                  Text('Total of Questions',
-                                    style: TextStyle(
-                                        color: Colors.grey[400],
-                                        fontSize: 14.0
-                                    ),),
-                                  const SizedBox(height: 5.0,),
-                                  const Text('0',
-                                    style: TextStyle(
-                                      fontSize: 15.0,
-                                    ),)
-                                ],
-                              ),
-                              Column(
-                                  children: [
-                                    Text('Points',
-                                      style: TextStyle(
-                                          color: Colors.grey[400],
-                                          fontSize: 14.0
-                                      ),),
-                                    const SizedBox(height: 5.0,),
-                                    const Text('?',
-                                      style: TextStyle(
-                                        fontSize: 15.0,
-                                      ),
-                                    )
-                                  ]
-                              ),
-                            ],
-                          ),
-                        )
-                    )
-                ),
-              ],
+            const SizedBox(height: 20.0,),
+            const Text("Name :"),
+            TextFormField(
+              enabled: false,
+              decoration: InputDecoration(
+                  hintText: name,
+                  icon: const Icon(
+                    Icons.email,
+                    color: Colors.green,
+                  )
+              ),
             ),
+
           ],
         ),
       ),
