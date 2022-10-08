@@ -71,6 +71,7 @@ dependencies:
   matrix4_transform: ^2.0.1
 
   confetti: ^0.7.0
+  flutter_spinkit: ^5.1.0
 
 dev_dependencies:
   flutter_test:

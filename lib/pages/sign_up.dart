@@ -210,7 +210,7 @@ class _SignupPageState extends State<SignupPage> {
         print("Profile pic successfully uploaded!");
 
         // create database
-        createDB(username: nameController.text, userEmail: emailController.text, userPassword: passwordController.text,
+        createDB(userName: nameController.text, userEmail: emailController.text, userPassword: passwordController.text,
             userPhone: phoneController.text, userCourse: courseController.text, userBio: bioController.text,
             userLocation: locationController.text, userPoint: 1000, userToQ: 0);
 
@@ -274,7 +274,7 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
-  Future<void> createDB({required String username, required String userEmail, required String userPassword,
+  Future<void> createDB({required String userName, required String userEmail, required String userPassword,
     required String userPhone, required String userCourse, required String userBio,
     required String userLocation, required int userPoint, required int userToQ, }) async {
 

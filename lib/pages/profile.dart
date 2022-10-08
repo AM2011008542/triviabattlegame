@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -14,7 +16,36 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePage extends State<ProfilePage> {
 
-  final isDialOpen = ValueNotifier(false);
+  late String email;
+  late String name;
+  late String phone;
+  late String course;
+  late String bio;
+  late String location;
+  late int pointController;
+  late int ToQ;
+
+  // retrieve data from firestore
+  _getUserData() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+    final User user = auth.currentUser!;
+    final uid = user.uid;
+
+    await FirebaseFirestore.instance.collection('users').doc(uid).get().then((ds) {
+      name = ds.data()!["userName"];
+      course = ds.data()!["userCourse"];
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  // Get data from database
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +56,9 @@ class _ProfilePage extends State<ProfilePage> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          elevation: 0,
-          title: const Text("Profile"),
-          centerTitle: true,
+            elevation: 0,
+            title: const Text("Profile"),
+            centerTitle: true,
             actions: <Widget>[
               PopupMenuButton<String>(
                 onSelected: popupAction,
@@ -38,7 +69,7 @@ class _ProfilePage extends State<ProfilePage> {
                       child: Text(choice),
                     );
                   }).toList();
-                  },
+                },
               )
             ]
         ),
@@ -60,29 +91,37 @@ class _ProfilePage extends State<ProfilePage> {
                       flex:5,
                       child:SizedBox(
                         width: double.infinity,
-                        child: Column(
-                            children: const [
-                              SizedBox(height: 50.0,),
-                              CircleAvatar(
-                                radius: 65.0,
-                                backgroundImage: AssetImage('assets/tbag-logo-1.png'),
-                                backgroundColor: Colors.black,
-                              ),
-                              SizedBox(height: 10.0,),
-                              Text('Username',
-                                  style: TextStyle(
-                                    color:Colors.black,
-                                    fontSize: 20.0,
-                                  )),
-                              SizedBox(height: 10.0,),
-                              Text('Course',
-                                style: TextStyle(
-                                  color:Colors.black,
-                                  fontSize: 15.0,
-                                ),
-                              )
-                            ]
-                        ),
+                        child: FutureBuilder(
+                          future: _getUserData(),
+                          builder: (context, snapshot) {
+                            if(snapshot.connectionState != ConnectionState.done) {
+                              return const Text("Loading data...");
+                            }
+                            return Column(
+                                children: [
+                                  const SizedBox(height: 50.0,),
+                                  const CircleAvatar(
+                                    radius: 65.0,
+                                    backgroundImage: AssetImage('assets/tbag-logo-1.png'),
+                                    backgroundColor: Colors.black,
+                                  ),
+                                  const SizedBox(height: 10.0,),
+                                  Text(name,
+                                      style: const TextStyle(
+                                        color:Colors.black,
+                                        fontSize: 20.0,
+                                      )),
+                                  const SizedBox(height: 10.0,),
+                                  Text(course,
+                                    style: const TextStyle(
+                                      color:Colors.black,
+                                      fontSize: 15.0,
+                                    ),
+                                  )
+                                ]
+                            );
+                          },
+                        )
                       ),
                     ),
 
