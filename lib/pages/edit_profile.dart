@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -9,7 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:triviabattlegame/pages/profile.dart';
 import 'package:triviabattlegame/pages/users.dart';
+import 'package:triviabattlegame/trivia/ui/pages/home.dart';
 import '../animated/custom_form_button.dart';
 import '../animated/custom_input_field.dart';
 import '../animated/page_heading.dart';
@@ -114,7 +117,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                     itemCount: userList.length,
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (_, index) {
-                      return userUI(name, phone, course, bio, location);
+                      return userUI(name, phone, course, bio, location, image);
                     }
                 ),
                 onRefresh: () async {
@@ -128,7 +131,7 @@ class _EditProfilePage extends State<EditProfilePage> {
   }
 
   // User profile design
-  Widget userUI(String name, String phone, String course, String bio, String location) {
+  Widget userUI(String name, String phone, String course, String bio, String location, String image) {
     return Card (
       elevation: 10.0,
       child: Form(
@@ -183,7 +186,6 @@ class _EditProfilePage extends State<EditProfilePage> {
                       isDense: true,
                       validator: (name) {
                         if(name == null || name.isEmpty) {
-                          nameController.text = name!;
                           return 'Name is required!';
                         }
                         nameController.text = name;
@@ -191,7 +193,35 @@ class _EditProfilePage extends State<EditProfilePage> {
                       }
                   ),
 
-                  /*const SizedBox(height: 16,),
+                  const SizedBox(height: 16,),
+                  CustomInputField(
+                      labelText: 'Bio :',
+                      hintText: bio,
+                      isDense: true,
+                      validator: (bio) {
+                        if(bio == null || bio.isEmpty) {
+                          return 'Name field is required!';
+                        }
+                        bioController.text = bio;
+                        return null;
+                      }
+                  ),
+
+                  const SizedBox(height: 16,),
+                  CustomInputField(
+                      labelText: 'Course :',
+                      hintText: course,
+                      isDense: true,
+                      validator: (course) {
+                        if(course == null || course.isEmpty) {
+                          return 'Name field is required!';
+                        }
+                        courseController.text = course;
+                        return null;
+                      }
+                  ),
+
+                  const SizedBox(height: 16,),
                   CustomInputField(
                       labelText: 'Contact Number :',
                       hintText: phone,
@@ -200,52 +230,25 @@ class _EditProfilePage extends State<EditProfilePage> {
                         if(phone == null || phone.isEmpty) {
                           return 'Contact number is required!';
                         }
-                        nameController.text = phone;
+                        phoneController.text = phone;
                         return null;
                       }
                   ),
 
                   const SizedBox(height: 16,),
                   CustomInputField(
-                      labelText: 'Name',
-                      hintText: 'Your name',
+                      labelText: 'Location :',
+                      hintText: location,
                       isDense: true,
-                      validator: (name) {
-                        if(name == null || name.isEmpty) {
+                      validator: (location) {
+                        if(location == null || location.isEmpty) {
                           return 'Name field is required!';
                         }
-                        nameController.text = name;
+                        locationController.text = location;
                         return null;
                       }
                   ),
 
-                  const SizedBox(height: 16,),
-                  CustomInputField(
-                      labelText: 'Name',
-                      hintText: 'Your name',
-                      isDense: true,
-                      validator: (name) {
-                        if(name == null || name.isEmpty) {
-                          return 'Name field is required!';
-                        }
-                        nameController.text = name;
-                        return null;
-                      }
-                  ),
-
-                  const SizedBox(height: 16,),
-                  CustomInputField(
-                      labelText: 'Name',
-                      hintText: 'Your name',
-                      isDense: true,
-                      validator: (name) {
-                        if(name == null || name.isEmpty) {
-                          return 'Name field is required!';
-                        }
-                        nameController.text = name;
-                        return null;
-                      }
-                  ),*/
                   const SizedBox(height: 22,),
                   CustomFormButton(innerText: 'Submit',
                       onPressed: () async {
@@ -262,7 +265,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                           );
                         }
                       }),
-                  const SizedBox(height: 48,),
+                  const SizedBox(height: 130,),
                 ],
               ),
             ),
@@ -280,13 +283,15 @@ class _EditProfilePage extends State<EditProfilePage> {
 
   // retrieve data from firestore
   getUserData() async {
+    SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.edgeToEdge
+    );
+
     await Future.delayed(const Duration(seconds: 1));
     final FirebaseAuth auth = FirebaseAuth.instance;
 
     final User user = auth.currentUser!;
     final uid = user.uid;
-
-
 
     await FirebaseFirestore.instance.collection('users').doc(uid).get().then((ds) {
       email = ds.data()!["userEmail"];
@@ -325,13 +330,38 @@ class _EditProfilePage extends State<EditProfilePage> {
 
       final docUser = FirebaseFirestore.instance.collection("users").doc(uid);
 
+      // upload profile pic to database
+      final file = File(_profileImage!.path);
+
+      final refRoot = FirebaseStorage.instance.ref();
+      Reference refDirImages = refRoot.child("users").child(uid);
+
+      refDirImages.delete();
+
+      await refDirImages.putFile(file);
+      String image = await refDirImages.getDownloadURL();
+
       docUser.update({
         'userName': nameController.text,
         'userPhone': phoneController.text,
         'userCourse': courseController.text,
         'userBio': bioController.text,
         'userLocation': locationController.text,
+        'imageUrl': image,
       });
+
+      print("User profile update successfully!");
+
+      Navigator.pop(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+      print('Edit Profile');
+
+      showTopSnackBar(
+        context,
+        const CustomSnackBar.success(
+          message:
+          "User profile update successfully!",
+        ),
+      );
     }
   }
 
@@ -358,7 +388,7 @@ class _EditProfilePage extends State<EditProfilePage> {
         context,
         const CustomSnackBar.error(
           message:
-          "Profile picture is empty!",
+          "Please pick your new profile picture!",
         ),
       );
     } else if(_profileImage != null) {
