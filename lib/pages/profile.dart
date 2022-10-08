@@ -219,7 +219,7 @@ class _ProfilePage extends State<ProfilePage> {
                     children: [
                       const Text('Total of Questions',
                         style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontSize: 18.0
                         ),),
                       const SizedBox(height: 10.0,),
@@ -234,7 +234,7 @@ class _ProfilePage extends State<ProfilePage> {
                       children: [
                         const Text('Points',
                           style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontSize: 18.0
                           ),),
                         const SizedBox(height: 10.0,),
