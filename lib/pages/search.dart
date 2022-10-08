@@ -53,6 +53,14 @@ class _SearchPage extends State<SearchPage> {
         primarySwatch: Colors.purple,
       ),
       home: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.clear),
+          onPressed: () {
+            setState(() {
+              isExecuted = false;
+            });
+          },
+        ),
         appBar: AppBar(
           actions: [
             GetBuilder<DataController>(
@@ -73,7 +81,7 @@ class _SearchPage extends State<SearchPage> {
             )
           ],
           elevation: 0,
-          title: TextField(
+          title: TextFormField(
             style: const TextStyle(
                 color: Colors.white),
               decoration: const InputDecoration(
@@ -85,13 +93,9 @@ class _SearchPage extends State<SearchPage> {
             controller: searchController,
             ),
         ),
-        body: isExecuted ? searchedData() : const Center(
-          child: Text(
-            "Search any user...",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 25.0
-            ),
+        body: isExecuted ? searchedData() : Center(
+          child: Image.asset(
+              'assets/no-found.gif'
           ),
         ),
       ),
