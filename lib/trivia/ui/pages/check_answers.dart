@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -30,7 +31,6 @@ class _CheckAnswersPageState extends State<CheckAnswersPage> {
         centerTitle: true,
         title: const Text('Check Answers'),
         elevation: 0,
-        automaticallyImplyLeading: false,
       ),
       body: Stack(
         children: <Widget>[
@@ -56,9 +56,12 @@ class _CheckAnswersPageState extends State<CheckAnswersPage> {
   Widget _buildItem(BuildContext context, int index) {
     if(index == widget.questions.length) {
       return ElevatedButton(
-        child: const Text("Done"),
+        child: const Text("Exit"),
         onPressed: (){
-          Navigator.of(context).popUntil(ModalRoute.withName(Navigator.defaultRouteName));
+          exitAction();
+          SystemChrome.setEnabledSystemUIMode(
+              SystemUiMode.leanBack
+          );
         },
       );
     }
@@ -95,6 +98,39 @@ class _CheckAnswersPageState extends State<CheckAnswersPage> {
           ],
         ),
       ),
+    );
+  }
+
+  void exitAction() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (context) =>
+          CupertinoAlertDialog(
+            title: const Text('Warning!'),
+            content: const Text('Are you sure you want to quit the quiz? All your progress will be lost!'),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: const Text("Cancel"),
+                onPressed: () {
+                  print("Cancel");
+                  Navigator.of(context).pop(false);
+                  SystemChrome.setEnabledSystemUIMode(
+                      SystemUiMode.leanBack
+                  );
+                },
+              ),
+              CupertinoDialogAction(
+                  child: const Text("Okay"),
+                  onPressed: () {
+                    print("Okay");
+                    Navigator.of(context).popUntil(ModalRoute.withName(Navigator.defaultRouteName));
+                    SystemChrome.setEnabledSystemUIMode(
+                        SystemUiMode.leanBack
+                    );
+                  }),
+            ],
+          ),
     );
   }
 }

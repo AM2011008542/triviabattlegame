@@ -188,13 +188,13 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Colors.green,
                         textStyle: const TextStyle(
                             color: Colors.white,
                             fontSize: 15,
                             fontStyle: FontStyle.normal),
                       ),
-                      child: const Text("Go to Home"),
+                      child: const Text("Done"),
                       onPressed: () {
                         // update user point
                         final FirebaseAuth auth = FirebaseAuth.instance;
