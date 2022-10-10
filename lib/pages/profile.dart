@@ -332,7 +332,9 @@ class _ProfilePage extends State<ProfilePage> {
 
   void popupAction(String choice){
     if(choice == Constants.editProfile){
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const EditProfilePage()));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => const EditProfilePage()
+      ));
       print('Edit Profile');
     }
     else if(choice == Constants.logOut){

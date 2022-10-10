@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:triviabattlegame/trivia//models/question.dart';
 import 'package:triviabattlegame/trivia//ui/pages/check_answers.dart';
+import 'package:triviabattlegame/pages/users.dart';
 
 class QuizFinishedPage extends StatefulWidget {
   final List<Question> questions;
@@ -16,6 +17,61 @@ class QuizFinishedPage extends StatefulWidget {
 
 class _QuizFinishedPageState extends State<QuizFinishedPage> {
   int correctAnswers = 0;
+
+  late String email;
+  late String password;
+  late String name;
+  late String phone;
+  late String course;
+  late String bio;
+  late String location;
+  late int point;
+  late int ToQ;
+  late String image;
+
+  List<Users>userList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
+  // retrieve data from firestore
+  getUserData() async {
+    await Future.delayed(const Duration(seconds: 1));
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+    final User user = auth.currentUser!;
+    final uid = user.uid;
+
+    await FirebaseFirestore.instance.collection('users').doc(uid).get().then((ds) {
+      email = ds.data()!["userEmail"];
+      password = ds.data()!["userPassword"];
+      name = ds.data()!["userName"];
+      phone = ds.data()!["userPhone"];
+      course = ds.data()!["userCourse"];
+      bio = ds.data()!["userBio"];
+      location = ds.data()!["userLocation"];
+      point = ds.data()!["userPoint"];
+      ToQ = ds.data()!["userToQ"];
+      image = ds.data()!["imageUrl"];
+
+      Users users = Users(userName: name, userEmail: email, userPassword: password,
+          userPhone: phone, userCourse: course, userBio: bio, userLocation: location,
+          userPoint: point, userToQ: ToQ, imageUrl: image);
+
+      userList.add(users);
+
+      print(userList.length);
+
+      setState(() {
+        print("Load user data");
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
 
   @override
   Widget build(BuildContext context){
@@ -114,7 +170,8 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                       final uid = user.uid;
                       final docUser = FirebaseFirestore.instance.collection("users").doc(uid);
                       docUser.update({
-                        'userPoint': correct,
+                        'userPoint': point + correct,
+                        'userToQ': ToQ + widget.questions.length,
                       });
                       print("User point update successfully!");
 
