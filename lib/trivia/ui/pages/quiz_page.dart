@@ -87,19 +87,21 @@ class _QuizPageState extends State<QuizPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        ...options.map((option) => RadioListTile<String>( //<string>
-                              title: Text(HtmlUnescape().convert("$option"),style: MediaQuery.of(context).size.width > 800
-                              ? const TextStyle(
+                        ...options.map((option) => RadioListTile<String>(
+                          activeColor: Colors.blue,//<string>
+                          title: Text(HtmlUnescape().convert("$option"),
+                            style: MediaQuery.of(context).size.width > 800
+                                ? const TextStyle(
                                 fontSize: 30.0
-                              ) : null,),
-                              groupValue: _answers[_currentIndex],
-                              value: option,
-                              onChanged: (value) {
-                                setState(() {
-                                  _answers[_currentIndex] = option;
-                                });
-                              },
-                            )),
+                            ) : null,),
+                          groupValue: _answers[_currentIndex],
+                          value: option,
+                          onChanged: (value) {
+                            setState(() {
+                              _answers[_currentIndex] = option;
+                            });
+                            },
+                        )),
                       ],
                     ),
                   ),
@@ -110,6 +112,13 @@ class _QuizPageState extends State<QuizPage> {
                         /*padding: MediaQuery.of(context).size.width > 800
                               ? const EdgeInsets.symmetric(vertical: 20.0,horizontal: 64.0) : null,*/
                         onPressed: _nextSubmit,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontStyle: FontStyle.normal),
+                        ),
                         child: Text(
                             _currentIndex == (widget.questions.length - 1)
                                 ? "Submit"
