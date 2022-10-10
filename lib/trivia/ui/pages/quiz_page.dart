@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:triviabattlegame/trivia//models/category.dart';
@@ -145,27 +146,42 @@ class _QuizPageState extends State<QuizPage> {
       setState(() {
         _currentIndex++;
       });
+      // hide system overlay
+      SystemChrome.setEnabledSystemUIMode(
+          SystemUiMode.leanBack
+      );
     } else {
+      // hide system overlay
+      SystemChrome.setEnabledSystemUIMode(
+          SystemUiMode.leanBack
+      );
+
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => QuizFinishedPage(
-              questions: widget.questions, answers: _answers)));
+              questions: widget.questions, answers: _answers))
+      );
     }
   }
 
   Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
     context: context,
-    builder: (context) => AlertDialog(
-      title: const Text("Warning!"),
-      content: const Text("Are you sure you want to quit the quiz? All your progress will be lost."),
-      actions: [
-        ElevatedButton(
-          onPressed: () => Navigator.pop(context, true),
-          child: const Text("Okay"),
-        ),
-        ElevatedButton(
-          onPressed: () => Navigator.pop(context, false),
+    builder: (context) => CupertinoAlertDialog(
+      title: const Text('Warning!'),
+      content: const Text('Are you sure you want to quit the quiz? All your progress will be lost!'),
+      actions: <Widget>[
+        CupertinoDialogAction(
           child: const Text("Cancel"),
+          onPressed: () => Navigator.of(context).pop(false),
         ),
+        CupertinoDialogAction(
+            child: const Text("Okay"),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              // hide system overlay
+              SystemChrome.setEnabledSystemUIMode(
+                  SystemUiMode.leanBack
+              );
+            }),
       ],
     ),
   );

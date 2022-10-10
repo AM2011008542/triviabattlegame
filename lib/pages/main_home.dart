@@ -43,12 +43,6 @@ class _MainHome extends State<MainHome> {
 
   @override
   Widget build(BuildContext context) {
-    /*final items = <Widget> [
-      const Icon(Icons.home, size: 30),
-      const Icon(Icons.search, size: 30),
-      const Icon(Icons.leaderboard, size: 30),
-      const Icon(Icons.person, size: 30),
-    ];*/
 
     final item =  [
       SalomonBottomBarItem(
@@ -120,44 +114,7 @@ class _MainHome extends State<MainHome> {
                 print("Profile interface");
               }
             })
-
         )
-
-      /*Theme(
-            data: Theme.of(context).copyWith(
-              iconTheme: const IconThemeData(color: Colors.black),
-            ),
-            child: CurvedNavigationBar(
-                key: navigationKey,
-                buttonBackgroundColor: Colors.purpleAccent,
-                backgroundColor: Colors.transparent,
-                height: 60,
-                animationCurve: Curves.easeInOut,
-                animationDuration: const Duration(milliseconds: 200),
-                index: _currentIndex,
-                items: items,
-                onTap: (index) => setState(() {
-                  _currentIndex = index;
-                  if (index == 0) {
-                    appbarTitleString = "Home" ;
-                    appBarTitleText = Text(appbarTitleString);
-                    print("Home interface");
-                  } else if (index == 1) {
-                    appbarTitleString = "Search" ;
-                    appBarTitleText = Text(appbarTitleString);
-                    print("Search interface");
-                  } else if(index == 2) {
-                    appbarTitleString = "Leaderboard" ;
-                    appBarTitleText = Text(appbarTitleString);
-                    print("Leaderboard interface");
-                  } else if(index == 3) {
-                    appbarTitleString = "Profile" ;
-                    appBarTitleText = Text(appbarTitleString);
-                    print("Profile interface");
-                  }
-                })
-            )
-        )*/
     );
   }
 }
