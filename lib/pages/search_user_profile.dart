@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:triviabattlegame/pages/users.dart';
 
 class SearchUserProfilePage extends StatefulWidget {
@@ -106,69 +108,183 @@ class _SearchUserProfilePage extends State<SearchUserProfilePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  build(BuildContext context) {
+    return GetMaterialApp(
       title: "Profile interface",
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          ClipPath(
-            clipper: WaveClipperTwo(),
-            child: Container(
-              decoration:
-              const BoxDecoration(color: Colors.green),
-              height: 200,
-            ),
+      home: Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            title: const Text("Profile"),
+            centerTitle: true,
           ),
-          RefreshIndicator(
-            child: userList.isEmpty ? const Center(child: SpinKitCircle(color: Colors.green)) : ListView.builder (
-                itemCount: userList.length,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (_, index) {
-                  return userUI(email, name, phone, course, bio, location, point, ToQ, image);
-                }
-            ),
-            onRefresh: () async {
-              await loadRefresh();
-            },
-          ),
-        ],
-      )
+          body: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              ClipPath(
+                clipper: WaveClipperTwo(),
+                child: Container(
+                  decoration:
+                  const BoxDecoration(color: Colors.green),
+                  height: 200,
+                ),
+              ),
+              RefreshIndicator(
+                child: userList.isEmpty ? const Center(child: SpinKitCircle(color: Colors.green)) : ListView.builder (
+                    itemCount: userList.length,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (_, index) {
+                      return userUI(email, name, phone, course, bio, location, point, ToQ, image);
+                    }
+                ),
+                onRefresh: () async {
+                  await loadRefresh();
+                },
+              ),
+            ],
+          )
+      ),
     );
   }
 
+  // User profile design
   Widget userUI(String email, String name, String phone, String course, String bio, String location,
       int point, int ToQ, String image) {
-    return Column(
-      children: [
-        Text(
-          name,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          email,
-          style: const TextStyle(color: Colors.grey),
-        ),
+    return Card (
+      elevation: 10.0,
+      child: Container(
+        color: Colors.grey[300],
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+                width: double.infinity,
+                child: Column(
+                    children: [
+                      const SizedBox(height: 10.0,),
+                      CircleAvatar(
+                        radius: 65.0,
+                        backgroundImage: NetworkImage(image),
+                        backgroundColor: Colors.black,
+                      ),
+                      const SizedBox(height: 10.0,),
+                      Text(name,
+                          style: const TextStyle(
+                            color:Colors.black,
+                            fontSize: 20.0,
+                          )),
+                      const SizedBox(height: 10.0,),
+                      Text(email,
+                        style: const TextStyle(
+                          color:Colors.black,
+                          fontSize: 15.0,
+                        ),
+                      )
+                    ]
+                )
+            ),
 
-        const Text(
-          'About',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            const SizedBox(height: 20.0,),
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              color: Colors.green,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      const Text('Total of Questions',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0
+                        ),),
+                      const SizedBox(height: 10.0,),
+                      Text("$ToQ",
+                        style: const TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.white,
+                        ),)
+                    ],
+                  ),
+                  Column(
+                      children: [
+                        const Text('Points',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0
+                          ),),
+                        const SizedBox(height: 10.0,),
+                        Text('$point',
+                          style: const TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.white,
+                          ),
+                        )
+                      ]
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 20.0,),
+            const Text("Bio :"),
+            TextFormField(
+              enabled: false,
+              decoration: InputDecoration(
+                  hintText: bio,
+                  icon: const Icon(
+                    Icons.person,
+                    color: Colors.blue,
+                  )
+              ),
+            ),
+
+            const SizedBox(height: 20.0,),
+            const Text("Contact Number :"),
+            TextFormField(
+              enabled: false,
+              decoration: InputDecoration(
+                  hintText: phone,
+                  icon: const Icon(
+                    Icons.phone,
+                    color: Colors.blue,
+                  )
+              ),
+            ),
+
+            const SizedBox(height: 20.0,),
+            const Text("Course :"),
+            TextFormField(
+              enabled: false,
+              decoration: InputDecoration(
+                  hintText: course,
+                  icon: const Icon(
+                    Icons.book,
+                    color: Colors.blue,
+                  )
+              ),
+            ),
+
+            const SizedBox(height: 20.0,),
+            const Text("Location :"),
+            TextFormField(
+              enabled: false,
+              decoration: InputDecoration(
+                  hintText: location,
+                  icon: const Icon(
+                    Icons.map,
+                    color: Colors.blue,
+                  )
+              ),
+            ),
+
+            const SizedBox(height: 80.0,),
+          ],
         ),
-        const SizedBox(height: 16),
-        Text(
-          bio,
-          style: const TextStyle(fontSize: 16, height: 1.4),
-        ),
-      ],
+      ),
     );
   }
-
-  /*Widget buildUpgradeButton() => ButtonWidget(
-    text: 'Upgrade To PRO',
-    onClicked: () {},
-  );*/
 }

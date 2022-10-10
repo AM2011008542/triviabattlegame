@@ -126,14 +126,15 @@ class _SearchPage extends State<SearchPage> {
                                     onTap: () {
                                       Get.to(Navigator.push(context, MaterialPageRoute(builder: (context) => SearchUserProfilePage())),
                                           transition: Transition.downToUp,
-                                          arguments: document.id);
+                                          arguments: document.id
+                                      );
                                     },
                                     child: ListTile(
                                       leading: CircleAvatar(
                                         backgroundImage: NetworkImage(document["imageUrl"]),
                                       ),
                                       title: Text(document["userName"]),
-                                      subtitle: Text(document["userName"]),
+                                      // subtitle: Text(document["userName"]),
                                     ),
                                   );
                                 }).toList()
