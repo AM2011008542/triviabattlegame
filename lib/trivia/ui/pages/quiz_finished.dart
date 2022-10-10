@@ -1,19 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:triviabattlegame/trivia//models/question.dart';
 import 'package:triviabattlegame/trivia//ui/pages/check_answers.dart';
 
-class QuizFinishedPage extends StatelessWidget {
+class QuizFinishedPage extends StatefulWidget {
   final List<Question> questions;
   final Map<int, dynamic> answers;
 
-  int correctAnswers = 0;
   QuizFinishedPage({Key? key, required this.questions, required this.answers}): super(key: key);
+
+  @override
+  State<QuizFinishedPage> createState() => _QuizFinishedPageState();
+}
+
+class _QuizFinishedPageState extends State<QuizFinishedPage> {
+  int correctAnswers = 0;
 
   @override
   Widget build(BuildContext context){
     int correct = 0;
-    answers.forEach((index,value){
-      if(questions[index].correctAnswer == value) {
+    widget.answers.forEach((index,value){
+      if(widget.questions[index].correctAnswer == value) {
         correct++;
       }
     });
@@ -57,7 +65,7 @@ class QuizFinishedPage extends StatelessWidget {
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(16.0),
                   title: const Text("Total Questions", style: titleStyle),
-                  trailing: Text("${questions.length}", style: trailingStyle),
+                  trailing: Text("${widget.questions.length}", style: trailingStyle),
                 ),
               ),
               const SizedBox(height: 10.0),
@@ -68,7 +76,7 @@ class QuizFinishedPage extends StatelessWidget {
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(16.0),
                   title: const Text("Score", style: titleStyle),
-                  trailing: Text("${correct/questions.length * 100}%", style: trailingStyle),
+                  trailing: Text("${correct/widget.questions.length * 100}%", style: trailingStyle),
                 ),
               ),
               const SizedBox(height: 10.0),
@@ -79,7 +87,7 @@ class QuizFinishedPage extends StatelessWidget {
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(16.0),
                   title: const Text("Correct Answers", style: titleStyle),
-                  trailing: Text("$correct/${questions.length}", style: trailingStyle),
+                  trailing: Text("$correct/${widget.questions.length}", style: trailingStyle),
                 ),
               ),
               const SizedBox(height: 10.0),
@@ -90,32 +98,34 @@ class QuizFinishedPage extends StatelessWidget {
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(16.0),
                   title: const Text("Incorrect Answers", style: titleStyle),
-                  trailing: Text("${questions.length - correct}/${questions.length}", style: trailingStyle),
+                  trailing: Text("${widget.questions.length - correct}/${widget.questions.length}", style: trailingStyle),
                 ),
               ),
               const SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  ElevatedButton( // RaisedButton
-                    /*padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),*/
+                  ElevatedButton(
                     child: const Text("Go to Home"),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      // update user point
+                      final FirebaseAuth auth = FirebaseAuth.instance;
+                      final User user = auth.currentUser!;
+                      final uid = user.uid;
+                      final docUser = FirebaseFirestore.instance.collection("users").doc(uid);
+                      docUser.update({
+                        'userPoint': correct,
+                      });
+                      print("User point update successfully!");
+
+                      Navigator.pop(context);
+                      },
                   ),
-                  ElevatedButton( // RaisedButton
-                    /*padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    color: Theme.of(context).primaryColor,*/
+                  ElevatedButton(
                     child: const Text("Check Answers"),
                     onPressed: (){
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => CheckAnswersPage(questions: questions, answers: answers,)
+                        builder: (_) => CheckAnswersPage(questions: widget.questions, answers: widget.answers,)
                       ));
                     },
                   ),
