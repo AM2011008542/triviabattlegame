@@ -292,6 +292,21 @@ class _SignupPageState extends State<SignupPage> {
 
       print("Profile pic successfully uploaded!");
 
+      List<String> splitList = userName.split(" ");
+      List<String> indexList = [];
+      final database = FirebaseFirestore.instance;
+
+      for(int i = 0; i < splitList.length; i++) {
+        for(int j = 0 ; j < splitList[i].length + i; j++) {
+          indexList.add(splitList[i].substring(0, j).toLowerCase());
+        }
+      }
+      database.collection("searchIndex").add({
+        'userName': userName,
+        'imageUrl': image,
+        'searchIndex': indexList}
+      );
+
       // reference to document
       final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
 

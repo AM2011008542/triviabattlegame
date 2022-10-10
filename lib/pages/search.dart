@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:empty_widget/empty_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:triviabattlegame/pages/data_controller.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:triviabattlegame/pages/search_user_profile.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -13,95 +16,137 @@ class SearchPage extends StatefulWidget {
 class _SearchPage extends State<SearchPage> {
 
   final TextEditingController searchController = TextEditingController();
-  late QuerySnapshot snapshotData;
-  late bool isExecuted = false;
+
+  late String searchString = "";
 
   @override
   Widget build(BuildContext context) {
-    Widget searchedData() {
-      return ListView.builder(
-          itemCount: snapshotData.docs.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(snapshotData.docs[index]['imageUrl']),
-              ),
-              title: Text(
-                snapshotData.docs[index]["userName"],
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22.0
-                ),
-              ),
-              subtitle: Text(
-                snapshotData.docs[index]["userCourse"],
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0
-                ),
-              ),
-            );
-          }
-      );
-    }
-
-    return MaterialApp(
-      title: "Search interface",
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
-      home: Scaffold(
-        resizeToAvoidBottomInset : false,
-        appBar: AppBar(
-          actions: [
-            GetBuilder<DataController>(
-              init: DataController(),
-              builder: (val) {
-                return IconButton(
-                    onPressed: () {
-                      val.queryData(searchController.text).then((value) {
-                        snapshotData = value;
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: TextField(
+                      onChanged: (val) {
                         setState(() {
-                          isExecuted = true;
-                        });
-                      });
-                    },
-                    icon: const Icon(Icons.search)
-                );
-              },
-            )
-          ],
-          elevation: 0,
-          title: TextFormField(
-            style: const TextStyle(
-                color: Colors.white),
-              decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    color: Colors.white,
-                      onPressed: () {
-                      searchController.clear();
-                        setState(() {
-                          isExecuted = false;
+                          searchString = val.toLowerCase();
                         });
                       },
-                      icon: const Icon(Icons.clear)
+                      controller: searchController,
+                      decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              searchController.clear();
+
+                              // reset method here
+
+                            },
+                          ),
+                          hintText: "Search user here...",
+                          hintStyle: const TextStyle(
+                            fontFamily: "Antra",
+                            color: Colors.blueGrey,
+                          )
+                      ),
+                    ),
                   ),
-                  hintText: "Search user",
-                  hintStyle: const TextStyle(
-                      color: Colors.white
+                  Expanded(
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: (searchString == null || searchString.trim() == "")
+                          ? FirebaseFirestore.instance.collection("searchIndex").snapshots()
+                          : FirebaseFirestore.instance.collection("searchIndex").where("searchIndex",
+                          arrayContains: searchString).snapshots(),
+                      builder: (context, snapshot) {
+                        if(snapshot.hasError) {
+                          return SizedBox(
+                            child: Center(
+                                child: EmptyWidget(
+                                  packageImage: PackageImage.Image_4,
+                                  hideBackgroundAnimation: true,
+                                  title: "We got an error ${snapshot.error}]",
+                                  titleTextStyle: const TextStyle(
+                                    color: Colors.purple,
+                                    fontSize: 20,
+                                  ),
+                                )
+                            ),
+                          );
+                        }
+                        switch(snapshot.connectionState) {
+                          case ConnectionState.waiting :
+                            return SizedBox(
+                              child: Center(
+                                child: EmptyWidget(
+                                  image: 'assets/no-found.gif',
+                                  hideBackgroundAnimation: true,
+                                  title: "Loading...",
+                                  titleTextStyle: const TextStyle(
+                                    color: Colors.purple,
+                                    fontSize: 20,
+                                  ),
+                                )
+                              ),
+                            );
+                          case ConnectionState.none:
+                            return SizedBox(
+                              child: Center(
+                                  child: EmptyWidget(
+                                    packageImage: PackageImage.Image_4,
+                                    hideBackgroundAnimation: true,
+                                    title: "None...",
+                                    titleTextStyle: const TextStyle(
+                                      color: Colors.purple,
+                                      fontSize: 20,
+                                    ),
+                                  )
+                              ),
+                            );
+                          case ConnectionState.done:
+                            return SizedBox(
+                              child: Center(
+                                  child: EmptyWidget(
+                                    packageImage: PackageImage.Image_4,
+                                    hideBackgroundAnimation: true,
+                                    title: "Done...",
+                                    titleTextStyle: const TextStyle(
+                                      color: Colors.purple,
+                                      fontSize: 20,
+                                    ),
+                                  )
+                              ),
+                            );
+                          case ConnectionState.active:
+                            return ListView(
+                                children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Get.to(Navigator.push(context, MaterialPageRoute(builder: (context) => SearchUserProfilePage())),
+                                          transition: Transition.downToUp,
+                                          arguments: document.id);
+                                    },
+                                    child: ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundImage: NetworkImage(document["imageUrl"]),
+                                      ),
+                                      title: Text(document["userName"]),
+                                      subtitle: Text(document["userName"]),
+                                    ),
+                                  );
+                                }).toList()
+                            );
+                        }
+                      },
+                    ),
                   )
+                ],
               ),
-            controller: searchController,
-            ),
-        ),
-        body: isExecuted ? searchedData() : Center(
-          child: Image.asset(
-              'assets/no-found.gif'
-          ),
-        ),
-      ),
+          )
+        ],
+      )
     );
   }
 }

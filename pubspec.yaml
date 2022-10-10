@@ -75,6 +75,9 @@ dependencies:
   smart_select: ^4.3.2
   get: ^4.6.5
 
+  cached_network_image: ^3.2.2
+  empty_widget: ^0.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

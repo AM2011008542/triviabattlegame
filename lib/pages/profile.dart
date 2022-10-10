@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:confetti/confetti.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:triviabattlegame/pages/edit_profile.dart';
 import 'package:triviabattlegame/pages/users.dart';
 import '../animated/constants.dart';
-import '../animated/custom_form_button.dart';
 import '../auth_service.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -172,7 +168,7 @@ class _ProfilePage extends State<ProfilePage> {
 
   // User profile design
   Widget userUI(String email, String name, String phone, String course, String bio, String location,
-      int point, int ToQ, String image ) {
+      int point, int ToQ, String image) {
     return Card (
       elevation: 10.0,
       child: Container(
