@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:triviabattlegame/trivia//models/question.dart';
 import 'package:triviabattlegame/trivia//ui/pages/check_answers.dart';
 import 'package:triviabattlegame/pages/users.dart';
@@ -92,106 +94,152 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
       fontWeight: FontWeight.bold
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Result'),
-        elevation: 0,
-      ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Theme.of(context).primaryColor,
-              Theme.of(context).colorScheme.secondary
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter
-          )
+    return WillPopScope(
+      onWillPop: () async {
+        print("Back button pressed");
+        final shouldPop = await showWarning(context);
+        return shouldPop ?? false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text('Result'),
+          automaticallyImplyLeading: false,
+          elevation: 0,
         ),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)
-                ),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(16.0),
-                  title: const Text("Total Questions", style: titleStyle),
-                  trailing: Text("${widget.questions.length}", style: trailingStyle),
-                ),
-              ),
-              const SizedBox(height: 10.0),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)
-                ),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(16.0),
-                  title: const Text("Score", style: titleStyle),
-                  trailing: Text("${correct/widget.questions.length * 100}%", style: trailingStyle),
-                ),
-              ),
-              const SizedBox(height: 10.0),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)
-                ),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(16.0),
-                  title: const Text("Correct Answers", style: titleStyle),
-                  trailing: Text("$correct/${widget.questions.length}", style: trailingStyle),
-                ),
-              ),
-              const SizedBox(height: 10.0),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)
-                ),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(16.0),
-                  title: const Text("Incorrect Answers", style: titleStyle),
-                  trailing: Text("${widget.questions.length - correct}/${widget.questions.length}", style: trailingStyle),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  ElevatedButton(
-                    child: const Text("Go to Home"),
-                    onPressed: () {
-                      // update user point
-                      final FirebaseAuth auth = FirebaseAuth.instance;
-                      final User user = auth.currentUser!;
-                      final uid = user.uid;
-                      final docUser = FirebaseFirestore.instance.collection("users").doc(uid);
-                      docUser.update({
-                        'userPoint': point + correct,
-                        'userToQ': ToQ + widget.questions.length,
-                      });
-                      print("User point update successfully!");
-
-                      Navigator.pop(context);
-                      },
-                  ),
-                  ElevatedButton(
-                    child: const Text("Check Answers"),
-                    onPressed: (){
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => CheckAnswersPage(questions: widget.questions, answers: widget.answers,)
-                      ));
-                    },
-                  ),
-                ],
+        body: Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).colorScheme.secondary
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter
               )
-            ],
+          ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: <Widget>[
+                Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16.0),
+                    title: const Text("Total Questions", style: titleStyle),
+                    trailing: Text("${widget.questions.length}", style: trailingStyle),
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16.0),
+                    title: const Text("Score", style: titleStyle),
+                    trailing: Text("${correct/widget.questions.length * 100}%", style: trailingStyle),
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16.0),
+                    title: const Text("Correct Answers", style: titleStyle),
+                    trailing: Text("$correct/${widget.questions.length}", style: trailingStyle),
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16.0),
+                    title: const Text("Incorrect Answers", style: titleStyle),
+                    trailing: Text("${widget.questions.length - correct}/${widget.questions.length}", style: trailingStyle),
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontStyle: FontStyle.normal),
+                      ),
+                      child: const Text("Check Answers"),
+                      onPressed: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => CheckAnswersPage(questions: widget.questions, answers: widget.answers,)
+                        ));
+                      },
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontStyle: FontStyle.normal),
+                      ),
+                      child: const Text("Go to Home"),
+                      onPressed: () {
+                        // update user point
+                        final FirebaseAuth auth = FirebaseAuth.instance;
+                        final User user = auth.currentUser!;
+                        final uid = user.uid;
+                        final docUser = FirebaseFirestore.instance.collection("users").doc(uid);
+                        docUser.update({
+                          'userPoint': point + correct,
+                          'userToQ': ToQ + widget.questions.length,
+                        });
+                        print("User point update successfully!");
+
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
+    context: context,
+    builder: (context) => CupertinoAlertDialog(
+      title: const Text('Warning!'),
+      content: const Text('Are you sure you want to quit the quiz? All your progress will be lost!'),
+      actions: <Widget>[
+        CupertinoDialogAction(
+          child: const Text("Cancel"),
+          onPressed: () => Navigator.of(context).pop(false),
+        ),
+        CupertinoDialogAction(
+            child: const Text("Okay"),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              // hide system overlay
+              SystemChrome.setEnabledSystemUIMode(
+                  SystemUiMode.leanBack
+              );
+            }),
+      ],
+    ),
+  );
 }

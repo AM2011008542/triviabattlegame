@@ -85,7 +85,7 @@ class _SearchPage extends State<SearchPage> {
                                   hideBackgroundAnimation: true,
                                   title: "Loading...",
                                   titleTextStyle: const TextStyle(
-                                    color: Colors.purple,
+                                    color: Colors.black,
                                     fontSize: 20,
                                   ),
                                 )

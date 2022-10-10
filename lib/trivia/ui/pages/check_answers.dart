@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:triviabattlegame/trivia//models/question.dart';
 
-class CheckAnswersPage extends StatelessWidget {
+class CheckAnswersPage extends StatefulWidget {
   final List<Question> questions;
   final Map<int,dynamic> answers;
 
   const CheckAnswersPage({Key? key, required this.questions, required this.answers}) : super(key: key);
 
   @override
+  State<CheckAnswersPage> createState() => _CheckAnswersPageState();
+}
+
+class _CheckAnswersPageState extends State<CheckAnswersPage> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.leanBack
+    );
+  }
+
+  @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Check Answers'),
         elevation: 0,
+        automaticallyImplyLeading: false,
       ),
       body: Stack(
         children: <Widget>[
@@ -29,15 +45,16 @@ class CheckAnswersPage extends StatelessWidget {
           ),
           ListView.builder(
             padding: const EdgeInsets.all(16.0),
-            itemCount: questions.length+1,
+            itemCount: widget.questions.length+1,
             itemBuilder: _buildItem,
           )
         ],
       ),
     );
   }
+
   Widget _buildItem(BuildContext context, int index) {
-    if(index == questions.length) {
+    if(index == widget.questions.length) {
       return ElevatedButton(
         child: const Text("Done"),
         onPressed: (){
@@ -45,8 +62,8 @@ class CheckAnswersPage extends StatelessWidget {
         },
       );
     }
-    Question question = questions[index];
-    bool correct = question.correctAnswer == answers[index];
+    Question question = widget.questions[index];
+    bool correct = question.correctAnswer == widget.answers[index];
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -59,7 +76,7 @@ class CheckAnswersPage extends StatelessWidget {
               fontSize: 16.0
             ),),
             const SizedBox(height: 5.0),
-            Text(HtmlUnescape().convert("${answers[index]}"), style: TextStyle(
+            Text(HtmlUnescape().convert("${widget.answers[index]}"), style: TextStyle(
               color: correct ? Colors.green : Colors.red,
               fontSize: 18.0,
               fontWeight: FontWeight.bold
