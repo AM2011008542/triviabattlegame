@@ -85,7 +85,10 @@ class _LoginPageState extends State<LoginPage> {
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
                             onTap: () => {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgetPasswordPage()))
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgetPasswordPage())),
+                              SystemChrome.setEnabledSystemUIMode(
+                                  SystemUiMode.leanBack
+                              )
                             },
                             child: const Text(
                               'Forget password?',
@@ -124,7 +127,10 @@ class _LoginPageState extends State<LoginPage> {
                               const Text('Don\'t have an account ? ', style: TextStyle(fontSize: 13, color: Color(0xff939393), fontWeight: FontWeight.bold),),
                               GestureDetector(
                                 onTap: () => {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SignupPage()))
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SignupPage())),
+                                  SystemChrome.setEnabledSystemUIMode(
+                                      SystemUiMode.leanBack
+                                  )
                                 },
                                 child: const Text('Sign-up', style: TextStyle(fontSize: 15, color: Color(0xff748288), fontWeight: FontWeight.bold),),
                               ),

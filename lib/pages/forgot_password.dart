@@ -1,5 +1,10 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../animated/custom_form_button.dart';
 import '../animated/custom_input_field.dart';
 import '../animated/page_header.dart';
@@ -16,6 +21,8 @@ class ForgetPasswordPage extends StatefulWidget {
 class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
   final _forgetPasswordFormKey = GlobalKey<FormState>();
+
+  final TextEditingController emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +48,14 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                             labelText: 'Email',
                             hintText: 'Your email id',
                             isDense: true,
-                            validator: (textValue) {
-                              if(textValue == null || textValue.isEmpty) {
+                            validator: (email) {
+                              if(email == null || email.isEmpty) {
                                 return 'Email is required!';
                               }
-                              if(!EmailValidator.validate(textValue)) {
+                              if(!EmailValidator.validate(email)) {
                                 return 'Please enter a valid email';
                               }
+                              emailController.text = email;
                               return null;
                             }
                         ),
@@ -58,7 +66,10 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                           alignment: Alignment.center,
                           child: GestureDetector(
                             onTap: () => {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()))
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage())),
+                              SystemChrome.setEnabledSystemUIMode(
+                                  SystemUiMode.leanBack
+                              )
                             },
                             child: const Text(
                               'Back to login',
@@ -85,9 +96,30 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   void _handleForgetPassword() {
     // forget password
     if (_forgetPasswordFormKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Submitting data..')),
-      );
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+      choiceAction();
+      verifyEmail();
     }
+  }
+
+  Future verifyEmail() async {
+    FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text.trim());
+  }
+
+  void choiceAction() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text('Email Sent Successfully!'),
+        content: const Text('Kindly check your email as we have sent out reset password. For those who have not received, please check your spam inbox message.'),
+        actions: <Widget>[
+          CupertinoDialogAction(
+            child: const Text("Okay"),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+        ],
+      ),
+    );
   }
 }
