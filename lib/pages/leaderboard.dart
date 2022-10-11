@@ -52,7 +52,7 @@ class _LeaderboardPage extends State<LeaderboardPage> {
                   ),
                   Flexible(
                       child: StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance.collection('searchIndex').
+                          stream: FirebaseFirestore.instance.collection('users').
                           orderBy('userPoint', descending: true).snapshots(),
                           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                             if (streamSnapshot.hasData) {
