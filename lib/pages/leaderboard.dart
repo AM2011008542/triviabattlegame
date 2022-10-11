@@ -11,7 +11,7 @@ class LeaderboardPage extends StatefulWidget {
 class _LeaderboardPage extends State<LeaderboardPage> {
 
   int i = 0;
-  Color my = Colors.brown, CheckMyColor = Colors.white;
+  Color my = Colors.brown, CheckMyColor = Colors.black;
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +52,8 @@ class _LeaderboardPage extends State<LeaderboardPage> {
                   ),
                   Flexible(
                       child: StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance.collection('users').where('userPoint').
-                          orderBy('My Points', descending: true).snapshots(),
+                          stream: FirebaseFirestore.instance.collection('searchIndex').
+                          orderBy('userPoint', descending: true).snapshots(),
                           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                             if (streamSnapshot.hasData) {
                               i = 0;
@@ -63,8 +63,8 @@ class _LeaderboardPage extends State<LeaderboardPage> {
                                     print(index);
                                     if (index >= 1) {
                                       print('Greater than 1');
-                                      if (streamSnapshot.data!.docs[index]['MyPoints'] ==
-                                          streamSnapshot.data!.docs[index - 1]['MyPoints']) {
+                                      if (streamSnapshot.data!.docs[index]['userPoint'] ==
+                                          streamSnapshot.data!.docs[index - 1]['userPoint']) {
                                         print('Same');
                                       } else {
                                         i++;
@@ -79,7 +79,7 @@ class _LeaderboardPage extends State<LeaderboardPage> {
                                           decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: i == 0 ? Colors.amber : i == 1
-                                                      ? Colors.grey : i == 2 ? Colors.brown : Colors.white,
+                                                      ? Colors.grey : i == 2 ? Colors.brown : Colors.black,
                                                   width: 3.0,
                                                   style: BorderStyle.solid),
                                               borderRadius:
@@ -100,7 +100,7 @@ class _LeaderboardPage extends State<LeaderboardPage> {
                                                                     shape: BoxShape.circle,
                                                                     image: DecorationImage(
                                                                         image: NetworkImage(streamSnapshot.data!.docs
-                                                                        [index]['photoUrl']),
+                                                                        [index]['imageUrl']),
                                                                         fit: BoxFit.fill)
                                                                 )
                                                             )
@@ -147,7 +147,7 @@ class _LeaderboardPage extends State<LeaderboardPage> {
                                                       style: ElevatedButton.styleFrom(
                                                         backgroundColor: Colors.green,
                                                         textStyle: const TextStyle(
-                                                            color: Colors.white,
+                                                            color: Colors.black,
                                                             fontSize: 15,
                                                             fontStyle: FontStyle.normal),
                                                       ),
