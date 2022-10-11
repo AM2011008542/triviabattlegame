@@ -25,7 +25,7 @@ class _SearchUserProfilePage extends State<SearchUserProfilePage> {
   late int point;
   late int ToQ;
   late String image;
-  late List<String> index;
+  late List<String> index = [];
 
   List<Users>userList = [];
 
