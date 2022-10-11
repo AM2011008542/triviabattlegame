@@ -10,6 +10,7 @@ class Users {
   final int userPoint;
   final int userToQ;
   final String imageUrl;
+  final List<String> index;
 
   Users({
     this.userID = '',
@@ -23,6 +24,7 @@ class Users {
     required this.userPoint,
     required this.userToQ,
     required this.imageUrl,
+    required this.index,
   });
 
   Map<String, dynamic> toJson() => {
@@ -37,5 +39,6 @@ class Users {
     'userPoint': userPoint,
     'userToQ': userToQ,
     'imageUrl': imageUrl,
+    'index': index,
   };
 }

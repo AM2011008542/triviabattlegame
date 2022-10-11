@@ -30,6 +30,7 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
   late int point;
   late int ToQ;
   late String image;
+  late List<String> index;
 
   List<Users>userList = [];
 
@@ -58,10 +59,11 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
       point = ds.data()!["userPoint"];
       ToQ = ds.data()!["userToQ"];
       image = ds.data()!["imageUrl"];
+      index = ds.data()!["index"];
 
       Users users = Users(userName: name, userEmail: email, userPassword: password,
           userPhone: phone, userCourse: course, userBio: bio, userLocation: location,
-          userPoint: point, userToQ: ToQ, imageUrl: image);
+          userPoint: point, userToQ: ToQ, imageUrl: image, index: index);
 
       userList.add(users);
 

@@ -57,8 +57,8 @@ class _SearchPage extends State<SearchPage> {
                   Expanded(
                     child: StreamBuilder<QuerySnapshot>(
                       stream: (searchString == null || searchString.trim() == "")
-                          ? FirebaseFirestore.instance.collection("searchIndex").snapshots()
-                          : FirebaseFirestore.instance.collection("searchIndex").where("searchIndex",
+                          ? FirebaseFirestore.instance.collection("users").snapshots()
+                          : FirebaseFirestore.instance.collection("users").where("index",
                           arrayContains: searchString).snapshots(),
                       builder: (context, snapshot) {
                         if(snapshot.hasError) {

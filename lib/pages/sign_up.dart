@@ -304,11 +304,11 @@ class _SignupPageState extends State<SignupPage> {
           indexList.add(splitList[i].substring(0, j).toLowerCase());
         }
       }
-      database.collection("searchIndex").add({
+      /*database.collection("searchIndex").add({
         'userName': userName,
         'imageUrl': image,
         'searchIndex': indexList}
-      );
+      );*/
 
       // reference to document
       final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
@@ -326,6 +326,7 @@ class _SignupPageState extends State<SignupPage> {
         userPoint: 1000,
         userToQ: 0,
         imageUrl: image,
+        index: indexList,
       );
       final json = users.toJson();
       await userDoc.set(json);

@@ -29,6 +29,7 @@ class _ProfilePage extends State<ProfilePage> {
   late int point;
   late int ToQ;
   late String image;
+  late List<String> index;
 
   List<Users>userList = [];
 
@@ -54,7 +55,7 @@ class _ProfilePage extends State<ProfilePage> {
 
       Users users = Users(userName: name, userEmail: email, userPassword: password,
           userPhone: phone, userCourse: course, userBio: bio, userLocation: location,
-          userPoint: point, userToQ: ToQ, imageUrl: image);
+          userPoint: point, userToQ: ToQ, imageUrl: image, index: index);
 
       userList.add(users);
 
@@ -91,7 +92,7 @@ class _ProfilePage extends State<ProfilePage> {
 
       Users users = Users(userName: name, userEmail: email, userPassword: password,
           userPhone: phone, userCourse: course, userBio: bio, userLocation: location,
-          userPoint: point, userToQ: ToQ, imageUrl: image);
+          userPoint: point, userToQ: ToQ, imageUrl: image, index: index);
 
       userList.add(users);
 

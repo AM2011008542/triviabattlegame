@@ -11,7 +11,7 @@ class DataController extends GetxController {
 
   Future queryData(String queryString) async {
     return FirebaseFirestore.instance.collection("users").where(
-        'userName', isGreaterThanOrEqualTo: queryString
+        'index', isGreaterThanOrEqualTo: queryString
     ).get();
   }
 }
