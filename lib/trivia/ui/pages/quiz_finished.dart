@@ -10,8 +10,10 @@ import 'package:triviabattlegame/pages/users.dart';
 class QuizFinishedPage extends StatefulWidget {
   final List<Question> questions;
   final Map<int, dynamic> answers;
+  final String difficulty;
 
-  QuizFinishedPage({Key? key, required this.questions, required this.answers}): super(key: key);
+  QuizFinishedPage({Key? key, required this.questions, required this.answers, required this.difficulty})
+      : super(key: key);
 
   @override
   State<QuizFinishedPage> createState() => _QuizFinishedPageState();
@@ -184,8 +186,10 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                       child: const Text("Check Answers"),
                       onPressed: (){
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => CheckAnswersPage(questions: widget.questions, answers: widget.answers,)
+                            builder: (_) => CheckAnswersPage(
+                                questions: widget.questions, answers: widget.answers, difficulty: widget.difficulty)
                         ));
+                        print(widget.difficulty.toString());
                       },
                     ),
                     ElevatedButton(
@@ -203,11 +207,25 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                         final User user = auth.currentUser!;
                         final uid = user.uid;
                         final docUser = FirebaseFirestore.instance.collection("users").doc(uid);
-                        docUser.update({
-                          'userPoint': point + correct,
-                          'userToQ': ToQ + widget.questions.length,
-                        });
-                        print("User point update successfully!");
+                        if(widget.difficulty.toString() == "easy") {
+                          docUser.update({
+                            'userPoint': point + (correct * 1),
+                            'userToQ': ToQ + widget.questions.length,
+                          });
+                          print("User easy point update successfully!");
+                        } else if(widget.difficulty.toString() == "medium") {
+                          docUser.update({
+                            'userPoint': point + (correct * 3),
+                            'userToQ': ToQ + widget.questions.length,
+                          });
+                          print("User medium point update successfully!");
+                        } else if(widget.difficulty.toString() == "hard") {
+                          docUser.update({
+                            'userPoint': point + (correct * 5),
+                            'userToQ': ToQ + widget.questions.length,
+                          });
+                          print("User hard point update successfully!");
+                        }
 
                         Navigator.pop(context);
                       },

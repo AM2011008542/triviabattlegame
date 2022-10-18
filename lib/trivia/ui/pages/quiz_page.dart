@@ -12,8 +12,9 @@ import 'package:html_unescape/html_unescape.dart';
 class QuizPage extends StatefulWidget {
   final List<Question> questions;
   final Category category;
+  final String difficulty;
 
-  const QuizPage({Key? key, required this.questions, required this.category})
+  const QuizPage({Key? key, required this.questions, required this.category, required this.difficulty})
       : super(key: key);
 
   @override
@@ -167,7 +168,7 @@ class _QuizPageState extends State<QuizPage> {
 
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => QuizFinishedPage(
-              questions: widget.questions, answers: _answers))
+              questions: widget.questions, answers: _answers, difficulty: widget.difficulty))
       );
     }
   }

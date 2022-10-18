@@ -152,9 +152,9 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
         return;
       }
       Navigator.push(context, MaterialPageRoute(
-        builder: (_) => QuizPage(questions: questions, category: widget.category,)
+        builder: (_) => QuizPage(questions: questions, category: widget.category, difficulty: _difficulty,)
       ));
-    }on SocketException catch (_) {
+    } on SocketException catch (_) {
       Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (_) => const ErrorPage(message: "Can't reach the servers, \n Please check your internet connection.",)
       ));

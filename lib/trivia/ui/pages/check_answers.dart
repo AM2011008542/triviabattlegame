@@ -8,8 +8,10 @@ import 'package:triviabattlegame/trivia//models/question.dart';
 class CheckAnswersPage extends StatefulWidget {
   final List<Question> questions;
   final Map<int,dynamic> answers;
+  final String difficulty;
 
-  const CheckAnswersPage({Key? key, required this.questions, required this.answers}) : super(key: key);
+  const CheckAnswersPage({Key? key, required this.questions, required this.answers, required this.difficulty})
+      : super(key: key);
 
   @override
   State<CheckAnswersPage> createState() => _CheckAnswersPageState();
