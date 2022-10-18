@@ -10,12 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import 'package:triviabattlegame/pages/profile.dart';
 import 'package:triviabattlegame/pages/users.dart';
-import 'package:triviabattlegame/trivia/ui/pages/home.dart';
 import '../animated/custom_form_button.dart';
 import '../animated/custom_input_field.dart';
-import '../animated/page_heading.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -25,7 +22,6 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePage extends State<EditProfilePage> {
-
   File? _profileImage;
 
   late String email;
@@ -40,7 +36,7 @@ class _EditProfilePage extends State<EditProfilePage> {
   late String image;
   late List<String> index = [];
 
-  List<Users>userList = [];
+  List<Users> userList = [];
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -61,7 +57,11 @@ class _EditProfilePage extends State<EditProfilePage> {
     final User user = auth.currentUser!;
     final uid = user.uid;
 
-    await FirebaseFirestore.instance.collection('users').doc(uid).get().then((ds) {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((ds) {
       email = ds.data()!["userEmail"];
       password = ds.data()!["userPassword"];
       name = ds.data()!["userName"];
@@ -73,9 +73,18 @@ class _EditProfilePage extends State<EditProfilePage> {
       ToQ = ds.data()!["userToQ"];
       image = ds.data()!["imageUrl"];
 
-      Users users = Users(userName: name, userEmail: email, userPassword: password,
-          userPhone: phone, userCourse: course, userBio: bio, userLocation: location,
-          userPoint: point, userToQ: ToQ, imageUrl: image, index: index);
+      Users users = Users(
+          userName: name,
+          userEmail: email,
+          userPassword: password,
+          userPhone: phone,
+          userCourse: course,
+          userBio: bio,
+          userLocation: location,
+          userPoint: point,
+          userToQ: ToQ,
+          imageUrl: image,
+          index: index);
 
       userList.add(users);
 
@@ -98,9 +107,15 @@ class _EditProfilePage extends State<EditProfilePage> {
       ),
       home: Scaffold(
           appBar: AppBar(
-              elevation: 0,
-              title: const Text("Edit Profile"),
-              centerTitle: true,
+            elevation: 0,
+            title: const Text("Edit Profile"),
+            centerTitle: true,
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.arrow_back_outlined),
+            ),
           ),
           body: Stack(
             alignment: Alignment.topCenter,
@@ -108,42 +123,47 @@ class _EditProfilePage extends State<EditProfilePage> {
               ClipPath(
                 clipper: WaveClipperTwo(),
                 child: Container(
-                  decoration:
-                  const BoxDecoration(color: Colors.green),
+                  decoration: const BoxDecoration(color: Colors.green),
                   height: 200,
                 ),
               ),
               RefreshIndicator(
-                child: userList.isEmpty ? const Center(child: SpinKitCircle(color: Colors.green)) : ListView.builder (
-                    itemCount: userList.length,
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (_, index) {
-                      return userUI(name, phone, course, bio, location, image);
-                    }
-                ),
+                child: userList.isEmpty
+                    ? const Center(child: SpinKitCircle(color: Colors.green))
+                    : ListView.builder(
+                        itemCount: userList.length,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (_, index) {
+                          return userUI(
+                              name, phone, course, bio, location, image);
+                        }),
                 onRefresh: () async {
                   await loadRefresh();
                 },
               ),
             ],
-          )
-      ),
+          )),
     );
   }
 
   // User profile design
-  Widget userUI(String name, String phone, String course, String bio, String location, String image) {
-    return Card (
+  Widget userUI(String name, String phone, String course, String bio,
+      String location, String image) {
+    return Card(
       elevation: 10.0,
       child: Form(
         key: _editProfile,
         child: Column(
           children: [
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20),),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
               ),
               child: Column(
                 children: [
@@ -152,7 +172,9 @@ class _EditProfilePage extends State<EditProfilePage> {
                     height: 130,
                     child: CircleAvatar(
                       backgroundColor: Colors.grey.shade200,
-                      backgroundImage: _profileImage != null ? FileImage(_profileImage!) : null,
+                      backgroundImage: _profileImage != null
+                          ? FileImage(_profileImage!)
+                          : null,
                       child: Stack(
                         children: [
                           Positioned(
@@ -165,7 +187,8 @@ class _EditProfilePage extends State<EditProfilePage> {
                                 width: 50,
                                 decoration: BoxDecoration(
                                   color: Colors.blue.shade400,
-                                  border: Border.all(color: Colors.white, width: 3),
+                                  border:
+                                      Border.all(color: Colors.white, width: 3),
                                   borderRadius: BorderRadius.circular(25),
                                 ),
                                 child: const Icon(
@@ -180,93 +203,98 @@ class _EditProfilePage extends State<EditProfilePage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16,),
+                  const SizedBox(
+                    height: 16,
+                  ),
                   CustomInputField(
                       labelText: 'Name :',
                       hintText: name,
                       isDense: true,
                       validator: (name) {
-                        if(name == null || name.isEmpty) {
+                        if (name == null || name.isEmpty) {
                           return 'Name is required!';
                         }
                         nameController.text = name;
                         return null;
-                      }
+                      }),
+                  const SizedBox(
+                    height: 16,
                   ),
-
-                  const SizedBox(height: 16,),
                   CustomInputField(
                       labelText: 'Bio :',
                       hintText: bio,
                       isDense: true,
                       validator: (bio) {
-                        if(bio == null || bio.isEmpty) {
+                        if (bio == null || bio.isEmpty) {
                           return 'Name field is required!';
                         }
                         bioController.text = bio;
                         return null;
-                      }
+                      }),
+                  const SizedBox(
+                    height: 16,
                   ),
-
-                  const SizedBox(height: 16,),
                   CustomInputField(
                       labelText: 'Course :',
                       hintText: course,
                       isDense: true,
                       validator: (course) {
-                        if(course == null || course.isEmpty) {
+                        if (course == null || course.isEmpty) {
                           return 'Name field is required!';
                         }
                         courseController.text = course;
                         return null;
-                      }
+                      }),
+                  const SizedBox(
+                    height: 16,
                   ),
-
-                  const SizedBox(height: 16,),
                   CustomInputField(
                       labelText: 'Contact Number :',
                       hintText: phone,
                       isDense: true,
                       validator: (phone) {
-                        if(phone == null || phone.isEmpty) {
+                        if (phone == null || phone.isEmpty) {
                           return 'Contact number is required!';
                         }
                         phoneController.text = phone;
                         return null;
-                      }
+                      }),
+                  const SizedBox(
+                    height: 16,
                   ),
-
-                  const SizedBox(height: 16,),
                   CustomInputField(
                       labelText: 'Location :',
                       hintText: location,
                       isDense: true,
                       validator: (location) {
-                        if(location == null || location.isEmpty) {
+                        if (location == null || location.isEmpty) {
                           return 'Name field is required!';
                         }
                         locationController.text = location;
                         return null;
-                      }
+                      }),
+                  const SizedBox(
+                    height: 22,
                   ),
-
-                  const SizedBox(height: 22,),
-                  CustomFormButton(innerText: 'Submit',
+                  CustomFormButton(
+                      innerText: 'Submit',
                       onPressed: () async {
-                        hasInternet = await InternetConnectionChecker().hasConnection;
-                        if(hasInternet == true) {
+                        hasInternet =
+                            await InternetConnectionChecker().hasConnection;
+                        if (hasInternet == true) {
                           checkProfilePic();
                         } else {
                           showTopSnackBar(
                             context,
                             const CustomSnackBar.error(
-                              message:
-                              "No internet connection.",
+                              message: "No internet connection.",
                             ),
                           );
                         }
                       }),
-                  const SizedBox(height: 130,),
+                  const SizedBox(
+                    height: 130,
+                  ),
                 ],
               ),
             ),
@@ -284,9 +312,7 @@ class _EditProfilePage extends State<EditProfilePage> {
 
   // retrieve data from firestore
   getUserData() async {
-    SystemChrome.setEnabledSystemUIMode(
-        SystemUiMode.edgeToEdge
-    );
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     await Future.delayed(const Duration(seconds: 1));
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -294,7 +320,11 @@ class _EditProfilePage extends State<EditProfilePage> {
     final User user = auth.currentUser!;
     final uid = user.uid;
 
-    await FirebaseFirestore.instance.collection('users').doc(uid).get().then((ds) {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((ds) {
       email = ds.data()!["userEmail"];
       password = ds.data()!["userPassword"];
       name = ds.data()!["userName"];
@@ -306,9 +336,18 @@ class _EditProfilePage extends State<EditProfilePage> {
       ToQ = ds.data()!["userToQ"];
       image = ds.data()!["imageUrl"];
 
-      Users users = Users(userName: name, userEmail: email, userPassword: password,
-          userPhone: phone, userCourse: course, userBio: bio, userLocation: location,
-          userPoint: point, userToQ: ToQ, imageUrl: image, index: index);
+      Users users = Users(
+          userName: name,
+          userEmail: email,
+          userPassword: password,
+          userPhone: phone,
+          userCourse: course,
+          userBio: bio,
+          userLocation: location,
+          userPoint: point,
+          userToQ: ToQ,
+          imageUrl: image,
+          index: index);
 
       userList.add(users);
 
@@ -344,8 +383,8 @@ class _EditProfilePage extends State<EditProfilePage> {
 
       List<String> splitList = nameController.text.split(" ");
       List<String> indexList = [];
-      for(int i = 0; i < splitList.length; i++) {
-        for(int j = 0 ; j < splitList[i].length + i; j++) {
+      for (int i = 0; i < splitList.length; i++) {
+        for (int j = 0; j < splitList[i].length + i; j++) {
           indexList.add(splitList[i].substring(0, j).toLowerCase());
         }
       }
@@ -362,50 +401,45 @@ class _EditProfilePage extends State<EditProfilePage> {
 
       print("User profile update successfully!");
 
-      Navigator.pop(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+      Navigator.pop(
+          context, MaterialPageRoute(builder: (context) => EditProfilePage()));
       print('Edit Profile');
 
       showTopSnackBar(
         context,
         const CustomSnackBar.success(
-          message:
-          "User profile update successfully!",
+          message: "User profile update successfully!",
         ),
       );
 
-      SystemChrome.setEnabledSystemUIMode(
-          SystemUiMode.leanBack
-      );
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
     }
   }
 
   void pickProfileImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if(image == null) return;
+      if (image == null) return;
 
       final imageTemporary = File(image.path);
       setState(() => _profileImage = imageTemporary);
-
     } on PlatformException catch (e) {
       const CustomSnackBar.error(
-        message:
-        "Failed to pick image error.",
+        message: "Failed to pick image error.",
       );
       debugPrint('Failed to pick image error: $e');
     }
   }
 
   void checkProfilePic() async {
-    if(_profileImage == null) {
+    if (_profileImage == null) {
       showTopSnackBar(
         context,
         const CustomSnackBar.error(
-          message:
-          "Please pick your new profile picture!",
+          message: "Please pick your new profile picture!",
         ),
       );
-    } else if(_profileImage != null) {
+    } else if (_profileImage != null) {
       editProfile();
     }
   }

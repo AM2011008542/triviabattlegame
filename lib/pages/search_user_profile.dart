@@ -114,6 +114,12 @@ class _SearchUserProfilePage extends State<SearchUserProfilePage> {
             elevation: 0,
             title: const Text("Profile"),
             centerTitle: true,
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.arrow_back_outlined),
+            ),
           ),
           body: Stack(
             alignment: Alignment.topCenter,
