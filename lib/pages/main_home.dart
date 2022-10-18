@@ -1,4 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,7 @@ class _MainHome extends State<MainHome> {
   final navigationKey = GlobalKey<CurvedNavigationBarState>();
 
   int _currentIndex = 0;
+  bool musicPlaying = false;
 
   final pages = [
     HomePage(), //const
@@ -33,6 +35,7 @@ class _MainHome extends State<MainHome> {
   void initState() {
     super.initState();
     controller = ScrollController();
+    FlameAudio.bgm.initialize();
   }
 
   @override
@@ -84,6 +87,13 @@ class _MainHome extends State<MainHome> {
                 SystemChrome.setEnabledSystemUIMode(
                     SystemUiMode.leanBack
                 );
+
+                if(musicPlaying) {
+                  FlameAudio.bgm.stop();
+                  musicPlaying = false;
+                  print("Podium sound played");
+                }
+
                 print("Home interface");
               } else if (index == 1) {
                 SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -93,6 +103,13 @@ class _MainHome extends State<MainHome> {
                 SystemChrome.setEnabledSystemUIMode(
                     SystemUiMode.leanBack
                 );
+
+                if(musicPlaying) {
+                  FlameAudio.bgm.stop();
+                  musicPlaying = false;
+                  print("Podium sound played");
+                }
+
                 print("Search interface");
               } else if(index == 2) {
                 SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -102,6 +119,13 @@ class _MainHome extends State<MainHome> {
                 SystemChrome.setEnabledSystemUIMode(
                     SystemUiMode.leanBack
                 );
+
+                if(!musicPlaying) {
+                  FlameAudio.bgm.play("podium-sound.mp3");
+                  musicPlaying = true;
+                  print("Podium sound played");
+                }
+
                 print("Leaderboard interface");
               } else if(index == 3) {
                 SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -111,6 +135,13 @@ class _MainHome extends State<MainHome> {
                 SystemChrome.setEnabledSystemUIMode(
                     SystemUiMode.leanBack
                 );
+
+                if(musicPlaying) {
+                  FlameAudio.bgm.stop();
+                  musicPlaying = false;
+                  print("Podium sound played");
+                }
+
                 print("Profile interface");
               }
             })
