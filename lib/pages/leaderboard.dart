@@ -17,6 +17,8 @@ class _LeaderboardPage extends State<LeaderboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     var r = const TextStyle(color: Colors.purpleAccent, fontSize: 34);
     return MaterialApp(
         title: "Leaderboard interface",
@@ -59,6 +61,11 @@ class _LeaderboardPage extends State<LeaderboardPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  SizedBox(
+                    width: double.infinity,
+                    height: size.height * 0.1,
+                    child: Image.asset('assets/Trophy.png'),
+                  ),
                   const Padding(
                     padding: EdgeInsets.only(left: 15.0),
                     child: Text(
