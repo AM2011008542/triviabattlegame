@@ -237,7 +237,7 @@ class _SearchUserProfilePage extends State<SearchUserProfilePage> {
                   hintText: bio,
                   icon: const Icon(
                     Icons.person,
-                    color: Colors.blue,
+                    color: Colors.red,
                   )
               ),
             ),
@@ -250,7 +250,7 @@ class _SearchUserProfilePage extends State<SearchUserProfilePage> {
                   hintText: phone,
                   icon: const Icon(
                     Icons.phone,
-                    color: Colors.blue,
+                    color: Colors.red,
                   )
               ),
             ),
@@ -263,7 +263,7 @@ class _SearchUserProfilePage extends State<SearchUserProfilePage> {
                   hintText: course,
                   icon: const Icon(
                     Icons.book,
-                    color: Colors.blue,
+                    color: Colors.red,
                   )
               ),
             ),
@@ -276,7 +276,7 @@ class _SearchUserProfilePage extends State<SearchUserProfilePage> {
                   hintText: location,
                   icon: const Icon(
                     Icons.map,
-                    color: Colors.blue,
+                    color: Colors.red,
                   )
               ),
             ),
