@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:triviabattlegame/trivia//models/category.dart';
 import 'package:triviabattlegame/trivia//models/question.dart';
@@ -20,12 +21,15 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
   late String _difficulty;
   late bool processing;
 
+  bool musicPlaying = false;
+
   @override
   void initState() { 
     super.initState();
     _noOfQuestions = 10;
     _difficulty = "easy";
     processing = false;
+    FlameAudio.bgm.initialize();
   }
 
   @override
@@ -152,8 +156,14 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
         ));
         return;
       }
+      if(!musicPlaying) {
+        FlameAudio.bgm.play("lobby-sound.mp3");
+        musicPlaying = true;
+        print("Lobby sound played");
+      }
       Navigator.push(context, MaterialPageRoute(
-        builder: (_) => QuizPage(questions: questions, category: widget.category, difficulty: _difficulty,)
+        builder: (_) => QuizPage(questions: questions, category: widget.category, difficulty: _difficulty,
+          musicPlaying: musicPlaying,)
       ));
     } on SocketException catch (_) {
       Navigator.pushReplacement(context, MaterialPageRoute(

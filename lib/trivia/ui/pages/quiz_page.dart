@@ -1,3 +1,4 @@
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,8 +14,10 @@ class QuizPage extends StatefulWidget {
   final List<Question> questions;
   final Category category;
   final String difficulty;
+  final bool musicPlaying;
 
-  const QuizPage({Key? key, required this.questions, required this.category, required this.difficulty})
+  const QuizPage({Key? key, required this.questions, required this.category, required this.difficulty,
+    required this.musicPlaying})
       : super(key: key);
 
   @override
@@ -28,6 +31,14 @@ class _QuizPageState extends State<QuizPage> {
   int _currentIndex = 0;
   final Map<int, dynamic> _answers = {};
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  bool musicPlaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+    FlameAudio.bgm.initialize();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +123,9 @@ class _QuizPageState extends State<QuizPage> {
                       child: ElevatedButton( // RaisedButton
                         /*padding: MediaQuery.of(context).size.width > 800
                               ? const EdgeInsets.symmetric(vertical: 20.0,horizontal: 64.0) : null,*/
-                        onPressed: _nextSubmit,
+                        onPressed: () {
+                          _nextSubmit();
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           textStyle: const TextStyle(
@@ -166,6 +179,12 @@ class _QuizPageState extends State<QuizPage> {
           SystemUiMode.leanBack
       );
 
+      if(widget.musicPlaying) {
+        FlameAudio.bgm.stop();
+        musicPlaying = false;
+        print("Lobby sound stopped");
+      }
+
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => QuizFinishedPage(
               questions: widget.questions, answers: _answers, difficulty: widget.difficulty))
@@ -187,6 +206,11 @@ class _QuizPageState extends State<QuizPage> {
             child: const Text("Okay"),
             onPressed: () {
               Navigator.of(context).pop(true);
+              if(widget.musicPlaying) {
+                FlameAudio.bgm.stop();
+                musicPlaying = false;
+                print("Lobby sound stopped");
+              }
               // hide system overlay
               SystemChrome.setEnabledSystemUIMode(
                   SystemUiMode.leanBack
