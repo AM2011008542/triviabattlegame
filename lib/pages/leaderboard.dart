@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:triviabattlegame/pages/search_user_profile.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:triviabattlegame/pages/view_user_profile.dart';
 
 class LeaderboardPage extends StatefulWidget {
@@ -18,40 +15,57 @@ class _LeaderboardPage extends State<LeaderboardPage> {
   int i = 0;
   Color my = Colors.brown, CheckMyColor = Colors.black;
 
+
+
   @override
   Widget build(BuildContext context) {
     var r = const TextStyle(color: Colors.purpleAccent, fontSize: 34);
-    return Stack(
-      children: <Widget>[
-        Scaffold(
-            body: Container(
+    return MaterialApp(
+        title: "Leaderboard interface",
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+      home: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: RichText(
+              text: const TextSpan(
+                  text: "Leader",
+                  style: TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),
+                  children: [
+                    TextSpan(
+                        text: " Board",
+                        style: TextStyle(
+                            color: Colors.pink,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold))
+                  ])),
+          centerTitle: true,
+        ),
+        body: Stack(
+          children: <Widget>[
+            ClipPath(
+              clipper: WaveClipperTwo(),
+              child: Container(
+                decoration:
+                const BoxDecoration(color: Colors.blue),
+                height: 200,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              alignment: Alignment.center,
               margin: const EdgeInsets.only(top: 65.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.only(left: 15.0, top: 10.0),
-                    child: RichText(
-                        text: const TextSpan(
-                            text: "Leader",
-                            style: TextStyle(
-                                color: Colors.deepPurple,
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold),
-                            children: [
-                              TextSpan(
-                                  text: " Board",
-                                  style: TextStyle(
-                                      color: Colors.pink,
-                                      fontSize: 30.0,
-                                      fontWeight: FontWeight.bold))
-                            ])),
-                  ),
-
                   const Padding(
                     padding: EdgeInsets.only(left: 15.0),
                     child: Text(
-                      'Global Rank Board: ',
+                      'Top Rank Board: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -182,8 +196,10 @@ class _LeaderboardPage extends State<LeaderboardPage> {
                   )
                 ],
               ),
-            )),
-      ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }

@@ -312,8 +312,6 @@ class _EditProfilePage extends State<EditProfilePage> {
 
   // retrieve data from firestore
   getUserData() async {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-
     await Future.delayed(const Duration(seconds: 1));
     final FirebaseAuth auth = FirebaseAuth.instance;
 
