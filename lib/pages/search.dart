@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:empty_widget/empty_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:triviabattlegame/pages/search_user_profile.dart';
 
 class SearchPage extends StatefulWidget {
@@ -14,9 +12,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPage extends State<SearchPage> {
-
   final TextEditingController searchController = TextEditingController();
-
   late String searchString = "";
 
   @override
@@ -119,12 +115,13 @@ class _SearchPage extends State<SearchPage> {
                                   )
                               ),
                             );
-                          case ConnectionState.active:
+                          default:
                             return ListView(
                                 children: snapshot.data!.docs.map((DocumentSnapshot document) {
                                   return GestureDetector(
                                     onTap: () {
-                                      Get.to(Navigator.push(context, MaterialPageRoute(builder: (context) => SearchUserProfilePage())),
+                                      Get.to(Navigator.push(context, MaterialPageRoute(builder: (context) => SearchUserProfilePage(
+                                        userID: document["userID"],))),
                                           transition: Transition.downToUp,
                                           arguments: document.id
                                       );

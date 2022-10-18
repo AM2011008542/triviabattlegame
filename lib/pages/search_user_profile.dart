@@ -4,10 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:triviabattlegame/pages/users.dart';
 
 class SearchUserProfilePage extends StatefulWidget {
+  final String userID;
+
+  const SearchUserProfilePage({Key? key, required this.userID}) : super(key: key);
+
   @override
   _SearchUserProfilePage createState() => _SearchUserProfilePage();
 }
@@ -31,12 +34,8 @@ class _SearchUserProfilePage extends State<SearchUserProfilePage> {
   // retrieve data from firestore
   getUserData() async {
     await Future.delayed(const Duration(seconds: 1));
-    final FirebaseAuth auth = FirebaseAuth.instance;
 
-    final User user = auth.currentUser!;
-    final uid = user.uid;
-
-    await FirebaseFirestore.instance.collection('users').doc(uid).get().then((ds) {
+    await FirebaseFirestore.instance.collection('users').doc(widget.userID).get().then((ds) {
       email = ds.data()!["userEmail"];
       password = ds.data()!["userPassword"];
       name = ds.data()!["userName"];
@@ -68,12 +67,8 @@ class _SearchUserProfilePage extends State<SearchUserProfilePage> {
     userList.clear();
 
     await Future.delayed(const Duration(seconds: 1));
-    final FirebaseAuth auth = FirebaseAuth.instance;
 
-    final User user = auth.currentUser!;
-    final uid = user.uid;
-
-    await FirebaseFirestore.instance.collection('users').doc(uid).get().then((ds) {
+    await FirebaseFirestore.instance.collection('users').doc(widget.userID).get().then((ds) {
       email = ds.data()!["userEmail"];
       password = ds.data()!["userPassword"];
       name = ds.data()!["userName"];
