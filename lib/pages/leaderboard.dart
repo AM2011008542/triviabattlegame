@@ -58,7 +58,6 @@ class _LeaderboardPage extends State<LeaderboardPage> {
             Container(
               padding: const EdgeInsets.all(20.0),
               alignment: Alignment.center,
-              margin: const EdgeInsets.only(top: 65.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
