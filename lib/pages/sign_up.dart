@@ -25,7 +25,6 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-
   File? _profileImage;
 
   final TextEditingController emailController = TextEditingController();
@@ -46,29 +45,52 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: const Text("Edit Profile"),
+          centerTitle: true,
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(Icons.arrow_back_outlined),
+          ),
+        ),
         backgroundColor: const Color(0xffEEF1F3),
         body: SingleChildScrollView(
           child: Form(
             key: _signupFormKey,
             child: Column(
               children: [
-                const PageHeader(),
+                SizedBox(
+                  width: double.infinity,
+                  height: size.height * 0.3,
+                  child: Image.asset('assets/Create-a-kahoot.png'),
+                ),
                 Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(20),),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
                   ),
                   child: Column(
                     children: [
-                      const PageHeading(title: 'Sign-up',),
+                      const PageHeading(
+                        title: 'Sign-up',
+                      ),
                       SizedBox(
                         width: 130,
                         height: 130,
                         child: CircleAvatar(
                           backgroundColor: Colors.grey.shade200,
-                          backgroundImage: _profileImage != null ? FileImage(_profileImage!) : null,
+                          backgroundImage: _profileImage != null
+                              ? FileImage(_profileImage!)
+                              : null,
                           child: Stack(
                             children: [
                               Positioned(
@@ -81,7 +103,8 @@ class _SignupPageState extends State<SignupPage> {
                                     width: 50,
                                     decoration: BoxDecoration(
                                       color: Colors.blue.shade400,
-                                      border: Border.all(color: Colors.white, width: 3),
+                                      border: Border.all(
+                                          color: Colors.white, width: 3),
                                       borderRadius: BorderRadius.circular(25),
                                     ),
                                     child: const Icon(
@@ -96,43 +119,47 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16,),
+                      const SizedBox(
+                        height: 16,
+                      ),
                       CustomInputField(
                           labelText: 'Name',
                           hintText: 'Your name',
                           isDense: true,
                           validator: (name) {
-                            if(name == null || name.isEmpty) {
+                            if (name == null || name.isEmpty) {
                               return 'Name is required!';
                             }
                             nameController.text = name;
                             return null;
-                          }
+                          }),
+                      const SizedBox(
+                        height: 16,
                       ),
-                      const SizedBox(height: 16,),
                       CustomInputField(
                           labelText: 'Email',
                           hintText: 'Your email id',
                           isDense: true,
                           validator: (email) {
-                            if(email == null || email.isEmpty) {
+                            if (email == null || email.isEmpty) {
                               return 'Email is required!';
                             }
-                            if(!EmailValidator.validate(email)) {
+                            if (!EmailValidator.validate(email)) {
                               return 'Please enter a valid email';
                             }
                             emailController.text = email;
                             return null;
-                          }
+                          }),
+                      const SizedBox(
+                        height: 16,
                       ),
-                      const SizedBox(height: 16,),
                       CustomInputField(
                         labelText: 'Password',
                         hintText: 'Your password',
                         isDense: true,
                         obscureText: true,
                         validator: (password) {
-                          if(password == null || password.isEmpty) {
+                          if (password == null || password.isEmpty) {
                             return 'Password is required!';
                           }
                           passwordController.text = password;
@@ -140,24 +167,29 @@ class _SignupPageState extends State<SignupPage> {
                         },
                         suffixIcon: true,
                       ),
-                      const SizedBox(height: 22,),
-                      CustomFormButton(innerText: 'Signup',
+                      const SizedBox(
+                        height: 22,
+                      ),
+                      CustomFormButton(
+                          innerText: 'Signup',
                           onPressed: () async {
-                            hasInternet = await InternetConnectionChecker().hasConnection;
-                            if(hasInternet == true) {
+                            hasInternet =
+                                await InternetConnectionChecker().hasConnection;
+                            if (hasInternet == true) {
                               checkProfilePic();
                             } else {
                               showTopSnackBar(
                                 context,
                                 const CustomSnackBar.error(
-                                  message:
-                                  "No internet connection.",
+                                  message: "No internet connection.",
                                 ),
                               );
                             }
                           }),
-                      const SizedBox(height: 18,),
-                      SizedBox(
+                      const SizedBox(
+                        height: 18,
+                      ),
+                      /*SizedBox(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -175,7 +207,7 @@ class _SignupPageState extends State<SignupPage> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 30,),
+                      const SizedBox(height: 30,),*/
                     ],
                   ),
                 ),
@@ -195,26 +227,33 @@ class _SignupPageState extends State<SignupPage> {
 
       // sign up handling error method
       try {
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: emailController.text.trim(),
-            password: passwordController.text.trim()
-        );
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: emailController.text.trim(),
+                password: passwordController.text.trim());
 
         // create database
-        createDB(userName: nameController.text, userEmail: emailController.text, userPassword: passwordController.text,
-            userPhone: phoneController.text, userCourse: courseController.text, userBio: bioController.text,
-            userLocation: locationController.text, userPoint: 1000, userToQ: 0, userImage: imageController.text);
+        createDB(
+            userName: nameController.text,
+            userEmail: emailController.text,
+            userPassword: passwordController.text,
+            userPhone: phoneController.text,
+            userCourse: courseController.text,
+            userBio: bioController.text,
+            userLocation: locationController.text,
+            userPoint: 1000,
+            userToQ: 0,
+            userImage: imageController.text);
 
         // go to home interface
-        Navigator.pop(context, MaterialPageRoute(builder: (context) => const MainHome()));
-
+        Navigator.pop(
+            context, MaterialPageRoute(builder: (context) => const MainHome()));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           showTopSnackBar(
             context,
             const CustomSnackBar.error(
-              message:
-              "The password provided is too weak.",
+              message: "The password provided is too weak.",
             ),
           );
           print('The password provided is too weak.');
@@ -222,8 +261,7 @@ class _SignupPageState extends State<SignupPage> {
           showTopSnackBar(
             context,
             const CustomSnackBar.error(
-              message:
-              "The account already exists for that email.",
+              message: "The account already exists for that email.",
             ),
           );
           print('The account already exists for that email.');
@@ -237,45 +275,47 @@ class _SignupPageState extends State<SignupPage> {
   void pickProfileImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if(image == null) return;
+      if (image == null) return;
 
       final imageTemporary = File(image.path);
       setState(() => _profileImage = imageTemporary);
-      
     } on PlatformException catch (e) {
       const CustomSnackBar.error(
-        message:
-        "Failed to pick image error.",
+        message: "Failed to pick image error.",
       );
       debugPrint('Failed to pick image error: $e');
     }
   }
 
   void checkProfilePic() async {
-    if(_profileImage == null) {
+    if (_profileImage == null) {
       showTopSnackBar(
         context,
         const CustomSnackBar.error(
-          message:
-          "Profile picture is empty!",
+          message: "Profile picture is empty!",
         ),
       );
-    } else if(_profileImage != null) {
+    } else if (_profileImage != null) {
       _handleSignUpUser();
     }
   }
 
-  Future<void> createDB({required String userName, required String userEmail, required String userPassword,
-    required String userPhone, required String userCourse, required String userBio,
-    required String userLocation, required int userPoint, required int userToQ, required String userImage}
-      ) async {
-
+  Future<void> createDB(
+      {required String userName,
+      required String userEmail,
+      required String userPassword,
+      required String userPhone,
+      required String userCourse,
+      required String userBio,
+      required String userLocation,
+      required int userPoint,
+      required int userToQ,
+      required String userImage}) async {
     try {
       showTopSnackBar(
         context,
         const CustomSnackBar.success(
-          message:
-          "Congratulations, you've received 1000 points!",
+          message: "Congratulations, you've received 1000 points!",
         ),
       );
 
@@ -299,8 +339,8 @@ class _SignupPageState extends State<SignupPage> {
       List<String> indexList = [];
       final database = FirebaseFirestore.instance;
 
-      for(int i = 0; i < splitList.length; i++) {
-        for(int j = 0 ; j < splitList[i].length + i; j++) {
+      for (int i = 0; i < splitList.length; i++) {
+        for (int j = 0; j < splitList[i].length + i; j++) {
           indexList.add(splitList[i].substring(0, j).toLowerCase());
         }
       }
@@ -332,7 +372,6 @@ class _SignupPageState extends State<SignupPage> {
       await userDoc.set(json);
 
       print("Database successfully created!");
-
     } on PlatformException catch (e) {
       debugPrint('Failed to create database');
     }
