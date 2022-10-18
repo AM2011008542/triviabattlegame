@@ -39,7 +39,9 @@ class _SearchPage extends State<SearchPage> {
                               searchController.clear();
 
                               // reset method here
-
+                              setState(() {
+                                searchString = searchController.text;
+                              });
                             },
                           ),
                           hintText: "Search user here...",
