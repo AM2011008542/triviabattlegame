@@ -238,7 +238,7 @@ class _ViewUserProfilePage extends State<ViewUserProfilePage> {
                   hintText: bio,
                   icon: const Icon(
                     Icons.person,
-                    color: Colors.blue,
+                    color: Colors.green,
                   )
               ),
             ),
@@ -251,7 +251,7 @@ class _ViewUserProfilePage extends State<ViewUserProfilePage> {
                   hintText: phone,
                   icon: const Icon(
                     Icons.phone,
-                    color: Colors.blue,
+                    color: Colors.green,
                   )
               ),
             ),
@@ -264,7 +264,7 @@ class _ViewUserProfilePage extends State<ViewUserProfilePage> {
                   hintText: course,
                   icon: const Icon(
                     Icons.book,
-                    color: Colors.blue,
+                    color: Colors.green,
                   )
               ),
             ),
@@ -277,7 +277,7 @@ class _ViewUserProfilePage extends State<ViewUserProfilePage> {
                   hintText: location,
                   icon: const Icon(
                     Icons.map,
-                    color: Colors.blue,
+                    color: Colors.green,
                   )
               ),
             ),

@@ -15,8 +15,6 @@ class _LeaderboardPage extends State<LeaderboardPage> {
   int i = 0;
   Color my = Colors.brown, CheckMyColor = Colors.black;
 
-
-
   @override
   Widget build(BuildContext context) {
     var r = const TextStyle(color: Colors.purpleAccent, fontSize: 34);
