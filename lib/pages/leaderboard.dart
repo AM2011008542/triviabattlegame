@@ -1,5 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:triviabattlegame/pages/search_user_profile.dart';
+import 'package:triviabattlegame/pages/view_user_profile.dart';
 
 class LeaderboardPage extends StatefulWidget {
   const LeaderboardPage({Key? key}) : super(key: key);
@@ -151,9 +156,12 @@ class _LeaderboardPage extends State<LeaderboardPage> {
                                                             fontSize: 15,
                                                             fontStyle: FontStyle.normal),
                                                       ),
-                                                      child: const Text("Done"),
+                                                      child: const Text("View"),
                                                       onPressed: () {
-
+                                                        FirebaseFirestore.instance.collection('users').doc(streamSnapshot.data!.docs[index]['userID']).get().then((ds) {
+                                                          print(ds.data()!["userEmail"]); // print data to test
+                                                        });
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context) => ViewUserProfilePage(userID: streamSnapshot.data!.docs[index]['userID'],)));
                                                       },
                                                     ),
                                                   ),

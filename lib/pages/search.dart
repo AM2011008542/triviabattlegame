@@ -22,9 +22,9 @@ class _SearchPage extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
+        body: Column(
+          children: [
+            Expanded(
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -80,15 +80,15 @@ class _SearchPage extends State<SearchPage> {
                           case ConnectionState.waiting :
                             return SizedBox(
                               child: Center(
-                                child: EmptyWidget(
-                                  image: 'assets/no-found.gif',
-                                  hideBackgroundAnimation: true,
-                                  title: "Loading...",
-                                  titleTextStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                  ),
-                                )
+                                  child: EmptyWidget(
+                                    image: 'assets/no-found.gif',
+                                    hideBackgroundAnimation: true,
+                                    title: "Loading...",
+                                    titleTextStyle: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                    ),
+                                  )
                               ),
                             );
                           case ConnectionState.none:
@@ -145,9 +145,9 @@ class _SearchPage extends State<SearchPage> {
                   )
                 ],
               ),
-          )
-        ],
-      )
+            )
+          ],
+        )
     );
   }
 }
