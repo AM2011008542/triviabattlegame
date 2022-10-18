@@ -51,7 +51,7 @@ class _SignupPageState extends State<SignupPage> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: const Text("Edit Profile"),
+          title: const Text("Sign Up"),
           centerTitle: true,
           leading: GestureDetector(
             onTap: () {
@@ -68,8 +68,11 @@ class _SignupPageState extends State<SignupPage> {
               children: [
                 SizedBox(
                   width: double.infinity,
-                  height: size.height * 0.3,
+                  height: size.height * 0.2,
                   child: Image.asset('assets/Create-a-kahoot.png'),
+                ),
+                const SizedBox(
+                  height: 16,
                 ),
                 Container(
                   decoration: const BoxDecoration(
@@ -80,8 +83,8 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   child: Column(
                     children: [
-                      const PageHeading(
-                        title: 'Sign-up',
+                      const SizedBox(
+                        height: 16,
                       ),
                       SizedBox(
                         width: 130,
@@ -171,7 +174,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 22,
                       ),
                       CustomFormButton(
-                          innerText: 'Signup',
+                          innerText: 'Sign up',
                           onPressed: () async {
                             hasInternet =
                                 await InternetConnectionChecker().hasConnection;
