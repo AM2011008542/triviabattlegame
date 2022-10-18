@@ -342,6 +342,14 @@ class _EditProfilePage extends State<EditProfilePage> {
       await refDirImages.putFile(file);
       String image = await refDirImages.getDownloadURL();
 
+      List<String> splitList = nameController.text.split(" ");
+      List<String> indexList = [];
+      for(int i = 0; i < splitList.length; i++) {
+        for(int j = 0 ; j < splitList[i].length + i; j++) {
+          indexList.add(splitList[i].substring(0, j).toLowerCase());
+        }
+      }
+
       docUser.update({
         'userName': nameController.text,
         'userPhone': phoneController.text,
@@ -349,6 +357,7 @@ class _EditProfilePage extends State<EditProfilePage> {
         'userBio': bioController.text,
         'userLocation': locationController.text,
         'imageUrl': image,
+        'index': indexList,
       });
 
       print("User profile update successfully!");
